@@ -26,4 +26,9 @@ class Item extends Model
     {
         return $this->belongsTo(Warehouse::class);
     }
+
+    public function borrowedItems()
+    {
+        return $this->hasMany(BorrowedItem::class);
+    }
 }

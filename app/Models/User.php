@@ -54,4 +54,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Student::class);
     }
+
+    public function sentRequests()
+    {
+        return $this->hasMany(Request::class, 'sender_id');
+    }
+
+    public function handledRequests()
+    {
+        return $this->hasMany(Request::class, 'handler_id');
+    }
 }
