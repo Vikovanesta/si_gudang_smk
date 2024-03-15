@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'is_verified' => $this->is_verified,
             'role' => new RoleResource($this->role)
         ];
     }
