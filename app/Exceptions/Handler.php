@@ -2,11 +2,17 @@
 
 namespace App\Exceptions;
 
+use App\Traits\HttpResponses;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use HttpResponses;
+
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -25,6 +31,23 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function(NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                if ($request->method() === 'GET') {
+                    return $this->error(null, 'Endpoint not found', 404);
+                }
+                if ($request->method() === 'POST' || $request->method() === 'PUT' || $request->method() === 'DELETE' || $request->method() === 'PATCH') {
+                    return $this->error(null, 'This action is forbidden', 403);
+                }
+            }
+        });
+
+        $this->renderable(function(AccessDeniedHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return $this->error(null, 'Unauthorized', 401);
+            }
         });
     }
 }

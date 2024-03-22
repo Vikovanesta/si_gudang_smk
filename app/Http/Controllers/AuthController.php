@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthLoginRequest;
+use App\Http\Requests\EmployeeRegistrationRequest;
 use App\Http\Requests\StudentRegistrationRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Student;
@@ -11,6 +12,7 @@ use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,27 +33,44 @@ class AuthController extends Controller
     public function registerStudent(StudentRegistrationRequest $request)
     {
         $validated = $request->validated();
-        $user = auth()->user();
+        $user = Auth::user();
+        // dd($user);
+
+        // Check if student already registered
+        $studentByNisn = Student::where('nisn', $validated['nisn'])->first();
+        $studentByEmail = User::where('email', $validated['email'])->first();
+        if ($studentByNisn || $studentByEmail) {
+            return $this->error(
+                null,
+                'Student already registered',
+                400
+            );
+        }
 
         if ($user && ($user->isLaboran() || $user->isAdmin())) {
             $newUser = User::create([
-                'name' => $validated['name'],
                 'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
+                'password' => $validated['password'],
                 'phone' => $validated['phone'],
                 'role_id' => 2
             ]);
-
+            
             Student::create([
                 'user_id' => $newUser->id,
+                'class_id' => $validated['class_id'],
+                'name' => $validated['name'],
                 'nisn' => $validated['nisn'],
                 'year_in' => $validated['year_in'],
                 'date_of_birth' => $validated['date_of_birth']
             ]);
 
-            $validated['user_id'] = $newUser->id;
+            return $this->success(
+                new UserResource($newUser), 
+                'Student has been registered', 
+                201
+            );
         }
-        else {
+        else if (!$user) {
             $studentRegistration = StudentRegistration::create($validated);
     
             return $this->success(
@@ -60,12 +79,24 @@ class AuthController extends Controller
                 201
             );
         }
+        else {
+            return $this->error(
+                null,
+                'Unauthorized',
+                401
+            );
+        }
 
+    }
+
+    public function registerEmployee(EmployeeRegistrationRequest $request) 
+    {
+        $validated = $request->validated();
     }
 
     public function verifyRegistration(Request $request, $id)
     {
-        Gate::authorize('verify-registration');
+        Gate::authorize('management');
 
         $request = $request->validate([
             'verify' => 'required|boolean'
@@ -75,14 +106,14 @@ class AuthController extends Controller
 
         if($request['verify']) {
             $newUser = User::create([
-                'name' => $studentRegistration->name,
                 'email' => $studentRegistration->email,
-                'password' => Hash::make('password'),
+                'password' => $studentRegistration->password,
                 'phone' => $studentRegistration->phone,
                 'role_id' => 2
             ]);
-
+            
             Student::create([
+                'name' => $studentRegistration->name,
                 'user_id' => $newUser->id,
                 'nisn' => $studentRegistration->nisn,
                 'year_in' => $studentRegistration->year_in,
@@ -131,7 +162,7 @@ class AuthController extends Controller
         return $this->success([
             'user' => new UserResource($user),
             'token' => $token
-        ], 201);
+        ], 'Login Success', 200);
     }
 
     /**

@@ -14,6 +14,19 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        if ($this->role->name === 'student') {
+            $profile = new StudentResource($this->student);
+        }
+        elseif ($this->role->name === 'laboran') {
+            $profile = new LaboranResource($this->laboran);
+        }
+        elseif ($this->role->name === 'teacher') {
+            $profile = new TeacherResource($this->teacher);
+        }
+        else {
+            $profile = null;
+        }
+
         return [
             'id' => $this->id,
             'email'=> $this->email,
@@ -21,7 +34,8 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'is_verified' => $this->is_verified,
-            'role' => new RoleResource($this->role)
+            'role' => new RoleResource($this->role),
+            'profile' => $profile,
         ];
     }
 }

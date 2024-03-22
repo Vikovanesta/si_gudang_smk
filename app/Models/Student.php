@@ -11,11 +11,15 @@ class Student extends Model
 
     protected $fillable = [
         'user_id',
-        'school_class_id',
+        'class_id',
         'name',
         'nisn',
         'year_in',
         'date_of_birth',
+    ];
+
+    protected $casts = [
+        'date_of_birth' => 'date',
     ];
 
     public function user()
@@ -25,6 +29,6 @@ class Student extends Model
 
     public function schoolClass()
     {
-        return $this->belongsTo(SchoolClass::class);
+        return $this->belongsTo(SchoolClass::class, 'class_id');
     }
 }

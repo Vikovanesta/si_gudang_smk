@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'v1'], function(){
+Route::group(['middleware' => ['auth.opt'], 'prefix' => 'v1'], function(){
     Route::post('/register/students', [AuthController::class,'registerStudent'])->name('registerStudent');
     Route::post('/login', [AuthController::class,'login'])->name('login');
     // Route::post('/register', [AuthController::class,'register'])->name('register');
