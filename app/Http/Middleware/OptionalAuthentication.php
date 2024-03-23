@@ -38,6 +38,9 @@ class OptionalAuthentication
     {
         $token = Str::replaceFirst('Bearer ', '', $token);
         $token = PersonalAccessToken::findToken($token);
+        if (!$token) {
+            return 0;
+        }
         $user = $token->tokenable;
         return $user->id;
     }

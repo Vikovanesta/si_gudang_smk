@@ -5,8 +5,10 @@ namespace Database\Seeders;
 use App\Models\Laboran;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -19,31 +21,31 @@ class UserSeeder extends Seeder
             [
                 'role_id' => 1,
                 'email' => 'admin@mail.com',
-                'password' => 'password',
+                'password' => Hash::make('password'),
                 'phone' => '081234567890',
             ],
             [
                 'role_id' => 2,
                 'email' => 'student@mail.com',
-                'password' => 'password',
+                'password' => Hash::make('password'),
                 'phone' => '081234567891',
             ],
             [
                 'role_id' => 3,
                 'email' => 'teacher@mail.com',
-                'password' => 'password',
+                'password' => Hash::make('password'),
                 'phone' => '081234567892',
             ],
             [
                 'role_id' => 4,
                 'email' => 'laboran@mail.com',
-                'password' => 'password',
+                'password' => Hash::make('password'),
                 'phone' => '081234567893',
             ],
         ];
 
         foreach ($users as $user) {
-            \App\Models\User::create($user);
+            User::create($user);
         }
 
         Student::create([

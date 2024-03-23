@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\EmployeeRegistrationRequest;
 use App\Http\Requests\StudentRegistrationRequest;
+use App\Http\Resources\StudentRegistrationResource;
 use App\Http\Resources\UserResource;
 use App\Models\Student;
 use App\Models\StudentRegistration;
@@ -34,12 +35,8 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         $user = Auth::user();
-        // dd($user);
 
-        // Check if student already registered
-        $studentByNisn = Student::where('nisn', $validated['nisn'])->first();
-        $studentByEmail = User::where('email', $validated['email'])->first();
-        if ($studentByNisn || $studentByEmail) {
+        if ($this->isStudentRegistered($validated['nisn'], $validated['email'])) {
             return $this->error(
                 null,
                 'Student already registered',
@@ -74,7 +71,7 @@ class AuthController extends Controller
             $studentRegistration = StudentRegistration::create($validated);
     
             return $this->success(
-                $studentRegistration, 
+                new StudentRegistrationResource($studentRegistration), 
                 'Registration has been sent. Please wait for confirmation', 
                 201
             );
@@ -104,6 +101,14 @@ class AuthController extends Controller
 
         $studentRegistration = StudentRegistration::findOrFail($id);
 
+        if ($this->isStudentRegistered($studentRegistration->nisn, $studentRegistration->email)) {
+            return $this->error(
+                null,
+                'Student already registered',
+                400
+            );
+        }
+
         if($request['verify']) {
             $newUser = User::create([
                 'email' => $studentRegistration->email,
@@ -112,7 +117,8 @@ class AuthController extends Controller
                 'role_id' => 2
             ]);
             
-            Student::create([
+            $student = Student::create([
+                'class_id' => $studentRegistration->class_id,
                 'name' => $studentRegistration->name,
                 'user_id' => $newUser->id,
                 'nisn' => $studentRegistration->nisn,
@@ -120,17 +126,33 @@ class AuthController extends Controller
                 'date_of_birth' => $studentRegistration->date_of_birth
             ]);
 
-            $studentRegistration->update(['is_verified' => true]);
+            $studentRegistration->update([
+                'is_verified' => true,
+                'verifier_id' => Auth::id(),
+                'verified_at' => now()
+            ]);
+
+            return $this->success(
+                new UserResource($newUser), 
+                'Student has been succesfully registered', 
+                201
+            );
         }
         else {
             $studentRegistration->update(['is_verified' => false]);
-        }
 
-        return $this->success(
-            $studentRegistration, 
-            'Registration has been verified', 
-            200
-        );
+            $studentRegistration->update([
+                'is_verified' => false,
+                'verifier_id' => Auth::id(),
+                'verified_at' => now()
+            ]);
+
+            return $this->success(
+                new StudentRegistrationResource($studentRegistration), 
+                'Registration has been rejected', 
+                200
+            );
+        }
     }
 
     /**
@@ -181,5 +203,14 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
 
         return $this->success(null ,'Logged out', 200);
+    }
+
+    private function isStudentRegistered($nisn, $email)
+    {
+        $studentByNisn = Student::where('nisn', $nisn)->first();
+        $studentByEmail = User::where('email', $email)->first();
+        if ($studentByNisn || $studentByEmail) {
+            return true;
+        }
     }
 }

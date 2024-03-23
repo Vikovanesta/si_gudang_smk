@@ -14,13 +14,16 @@ return new class extends Migration
         Schema::create('student_registrations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('class_id')->constrained('school_classes');
-            $table->boolean('is_verified')->default(false);
+            $table->foreignId('verifier_id')->nullable()->constrained('users');
+            $table->boolean('is_verified')->nullable()->default(null);
             $table->string('name');
             $table->string('email');
+            $table->string('password');
             $table->string('phone');
             $table->string('nisn');
             $table->year('year_in');
             $table->date('date_of_birth');
+            $table->dateTime('verified_at')->nullable();
             $table->timestamps();
         });
     }
