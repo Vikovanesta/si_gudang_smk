@@ -27,6 +27,7 @@ class EmployeeRegistrationRequest extends FormRequest
             'password' => 'required|string|min:8',
             'phone' => 'required|string',
             'nip' => 'required|int',
+            'role_id' => 'required|int|between:3,4'
         ];
     }
 }

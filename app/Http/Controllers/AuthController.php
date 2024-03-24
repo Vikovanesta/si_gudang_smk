@@ -7,8 +7,10 @@ use App\Http\Requests\EmployeeRegistrationRequest;
 use App\Http\Requests\StudentRegistrationRequest;
 use App\Http\Resources\StudentRegistrationResource;
 use App\Http\Resources\UserResource;
+use App\Models\Laboran;
 use App\Models\Student;
 use App\Models\StudentRegistration;
+use App\Models\Teacher;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -28,7 +30,13 @@ class AuthController extends Controller
 
     public function indexRegistration(Request $request)
     {
+        Gate::authorize('management');
 
+        $query = $request->query();
+
+        $studentRegistrations = StudentRegistration::paginate($query['page_size'] ?? 15);
+
+        return StudentRegistrationResource::collection($studentRegistrations);
     }
 
     public function registerStudent(StudentRegistrationRequest $request)
@@ -47,7 +55,7 @@ class AuthController extends Controller
         if ($user && ($user->isLaboran() || $user->isAdmin())) {
             $newUser = User::create([
                 'email' => $validated['email'],
-                'password' => $validated['password'],
+                'password' => Hash::make($validated['password']),
                 'phone' => $validated['phone'],
                 'role_id' => 2
             ]);
@@ -88,7 +96,39 @@ class AuthController extends Controller
 
     public function registerEmployee(EmployeeRegistrationRequest $request) 
     {
+        Gate::authorize('management');
+
         $validated = $request->validated();
+
+        $newUser = User::create([
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'phone' => $validated['phone'],
+            'role_id' => $validated['role_id']
+        ]);
+        
+        if ($validated['role_id'] === 3) {
+            $employee = Teacher::create([
+                'user_id' => $newUser->id,
+                'nip' => $validated['nip'],
+                'name' => $validated['name']
+            ]);
+            $message = 'Teacher has been registered';
+        }
+        else if ($validated['role_id'] === 4){
+            $employee = Laboran::create([
+                'user_id' => $newUser->id,
+                'nip' => $validated['nip'],
+                'name' => $validated['name']
+            ]);
+            $message = 'Laboran has been registered';
+        }  
+
+        return $this->success(
+            new UserResource($newUser), 
+            $message, 
+            201
+        );
     }
 
     public function verifyRegistration(Request $request, $id)

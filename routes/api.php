@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BorrowingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,11 @@ Route::group(['middleware' => ['auth.opt'], 'prefix' => 'v1'], function(){
 });
 
 Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
+    Route::get('/register/students', [AuthController::class,'indexRegistration'])->name('indexRegistration');
     Route::post('/register/students/{studentRegistration}', [AuthController::class,'verifyRegistration'])->name('verifyRegistration');
+    Route::post('/register/employees', [AuthController::class,'registerEmployee'])->name('registerEmployee');
+
+    Route::get('/borrowings', [BorrowingController::class,'index'])->name('indexBorrowings');
 
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 });

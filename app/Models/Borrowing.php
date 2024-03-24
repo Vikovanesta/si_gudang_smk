@@ -17,6 +17,13 @@ class Borrowing extends Model
         'returned_at',
     ];
 
+    public function scopeFilterByQuery($q, array $filters)
+    {
+        return $q->when(isset($filters['status_id']), function ($q) use ($filters) {
+            $q->where('status_id', $filters['status_id']);
+        })->orderBy($filters['sort_by'] ?? 'borrowed_at', $filters['sort_direction'] ?? 'DESC');
+    }
+
     public function status()
     {
         return $this->belongsTo(BorrowingStatus::class);
