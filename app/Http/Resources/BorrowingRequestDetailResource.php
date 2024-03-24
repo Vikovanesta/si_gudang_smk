@@ -20,8 +20,10 @@ class BorrowingRequestDetailResource extends JsonResource
             'end_date' => $this->end_date,
             'note' => $this->note,
             'is_revised' => $this->is_revised,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'status' => new BorrowingRequestStatusResource($this->status),
-            'borroed_items' => BorrowedItemResource::collection($this->borrowedItems),
+            'borrowed_items' => BorrowedItemResource::collection($this->borrowedItems),
         ];
     }
 }

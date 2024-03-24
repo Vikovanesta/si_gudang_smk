@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
             BorrowingStatusSeeder::class,
             RequestStatusSeeder::class,
-            RequestSeeder::class,
+            BorrowingRequestSeeder::class,
             RequestDetailSeeder::class,
             BorrowedItemSeeder::class,
             BorrowingSeeder::class,

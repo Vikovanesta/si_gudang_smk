@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class BorrowingRequest extends Model
 {
     use HasFactory;
 
@@ -14,6 +14,13 @@ class Request extends Model
         'handler_id',
         'purpose',
     ];
+
+    public function scopeFilterByQuery($q, array $filters)
+    {
+        return $q->when(isset($filters['status_id']), function ($q) use ($filters) {
+            $q->where('status_id', $filters['status_id']);
+        })->orderBy($filters['sort_by'] ?? 'created_at', $filters['sort_direction'] ?? 'DESC');
+    }
 
     public function sender()
     {
@@ -30,8 +37,8 @@ class Request extends Model
         return $this->hasOne(Borrowing::class);
     }
 
-    public function requestDetails()
+    public function details()
     {
-        return $this->hasMany(RequestDetail::class);
+        return $this->hasMany(RequestDetail::class, 'request_id');
     }
 }

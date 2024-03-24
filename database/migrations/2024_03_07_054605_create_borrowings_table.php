@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('borrowings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('request_id')->constrained('requests');
+            $table->foreignId('request_id')->constrained('borrowing_requests');
             $table->foreignId('status_id')->constrained('borrowing_statuses');
             $table->dateTime('borrowed_at');
             $table->dateTime('returned_at')->nullable();

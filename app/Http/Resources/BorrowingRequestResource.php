@@ -14,9 +14,12 @@ class BorrowingRequestResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $sortedDetails = $this->details->sortByDesc('id');
+
         return [
             'id' => $this->id,
             'purpose' => $this->purpose,
+            'details' => BorrowingRequestDetailResource::collection($sortedDetails),
         ];
     }
 }

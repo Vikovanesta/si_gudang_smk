@@ -31,6 +31,6 @@ class Borrowing extends Model
 
     public function request()
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(BorrowingRequest::class);
     }
 }

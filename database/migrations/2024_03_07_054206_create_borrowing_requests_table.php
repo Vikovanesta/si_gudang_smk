@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('borrowing_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sender_id')->constrained('users');
             $table->foreignId('handler_id')->constrained('users');
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('borrowing_requests');
     }
 };

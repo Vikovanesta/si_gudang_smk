@@ -19,7 +19,7 @@ class RequestDetail extends Model
 
     public function request()
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(BorrowingRequest::class, 'request_id');
     }
 
     public function borrowedItems()
@@ -29,6 +29,6 @@ class RequestDetail extends Model
 
     public function status()
     {
-        return $this->belongsTo(RequestStatus::class);
+        return $this->belongsTo(RequestStatus::class, 'status_id');
     }
 }
