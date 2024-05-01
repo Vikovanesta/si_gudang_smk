@@ -19,7 +19,12 @@ class BorrowingRequestResource extends JsonResource
         return [
             'id' => $this->id,
             'purpose' => $this->purpose,
+            'status' => $sortedDetails->first()->status->name ?? 'pending',
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'details' => BorrowingRequestDetailResource::collection($sortedDetails),
+            'sender' => new UserResource($this->sender),
+            'handler' => new UserResource($this->handler),
         ];
     }
 }

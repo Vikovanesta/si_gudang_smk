@@ -26,7 +26,7 @@ class StudentResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
-            'class' => new ClassResource($this->schoolClass),
+            'class' => new ClassResource($this->whenLoaded('class')),
         ];
     }
 }

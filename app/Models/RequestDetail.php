@@ -11,10 +11,16 @@ class RequestDetail extends Model
 
     protected $fillable = [
         'request_id',
+        'status_id',
         'start_date',
         'end_date',
-        'status',
         'note',
+    ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'is_revised' => 'boolean',
     ];
 
     public function request()

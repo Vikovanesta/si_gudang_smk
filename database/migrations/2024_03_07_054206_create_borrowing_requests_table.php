@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('borrowing_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sender_id')->constrained('users');
-            $table->foreignId('handler_id')->constrained('users');
+            $table->foreignId('handler_id')->nullable()->constrained('users');
             $table->text('purpose');
             $table->timestamps();
         });

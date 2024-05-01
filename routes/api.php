@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/borrowings', [BorrowingController::class,'index'])->name('indexBorrowings');
 
     Route::get('/borrowing-requests', [BorrowingRequestController::class,'index'])->name('indexBorrowingRequests');
+    Route::post('/borrowing-requests', [BorrowingRequestController::class,'store'])->name('storeBorrowingRequest');
 
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 });
