@@ -16,12 +16,26 @@ class BorrowingRequestController extends Controller
 {
     use HttpResponses;
 
-    public function index(Request $request)
+    public function indexAcademic(Request $request)
     {
+        Gate::authorize('academic');
+
         $query = $request->query();
 
         $borrowingRequests = BorrowingRequest::where('sender_id', Auth::id())
             ->filterByQuery($query)
+            ->paginate($query['page_size'] ?? 15);
+
+        return BorrowingRequestResource::collection($borrowingRequests);
+    }
+
+    public function indexManagement(Request $request)
+    {
+        Gate::authorize('management');
+
+        $query = $request->query();
+
+        $borrowingRequests = BorrowingRequest::filterByQuery($query)
             ->paginate($query['page_size'] ?? 15);
 
         return BorrowingRequestResource::collection($borrowingRequests);

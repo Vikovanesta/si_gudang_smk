@@ -28,9 +28,10 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::post('/register/students/{studentRegistration}', [AuthController::class,'verifyRegistration'])->name('verifyRegistration');
     Route::post('/register/employees', [AuthController::class,'registerEmployee'])->name('registerEmployee');
 
-    Route::get('/me/borrowings', [BorrowingController::class,'index'])->name('indexBorrowings');
-    Route::get('/me/borrowing-requests', [BorrowingRequestController::class,'index'])->name('indexBorrowingRequests');
+    Route::get('/me/borrowings', [BorrowingController::class,'indexAcademic'])->name('indexAcademicBorrowings');
+    Route::get('/me/borrowing-requests', [BorrowingRequestController::class,'indexAcademic'])->name('indexAcademicBorrowingRequests');
 
+    Route::get('/borrowing-requests', [BorrowingRequestController::class,'indexManagement'])->name('indexManagementBorrowingRequests');
     Route::post('/borrowing-requests', [BorrowingRequestController::class,'store'])->name('storeBorrowingRequest');
     Route::put('/borrowing-requests/{borrowingRequest}', [BorrowingRequestController::class,'handle'])->name('handleBorrowingRequest');
 
