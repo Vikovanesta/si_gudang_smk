@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Borrowing;
+use App\Models\BorrowingRequest;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -34,6 +36,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('academic', function ($user) {
             return $user->isStudent() || $user->isTeacher();
+        });
+
+        Gate::define(('handle-academic-request'), function ($user, BorrowingRequest $borrowingRequest) {
+            return $user->id == $borrowingRequest->sender_id;
         });
 
         //

@@ -16,17 +16,24 @@ class RequestDetailSeeder extends Seeder
         RequestDetail::create([
             'request_id' => 1,
             'status_id' => 3,
-            'start_date' => '2021-08-01',
-            'end_date' => '2021-08-04',
+            'start_date' => '2021-08-01 08:00:00',
+            'end_date' => '2021-08-04 17:00:00',
         ]);
 
         RequestDetail::create([
             'request_id' => 1,
             'status_id' => 2,
-            'start_date' => '2021-08-01',
-            'end_date' => '2021-08-03',
+            'start_date' => '2021-08-01 08:00:00',
+            'end_date' => '2021-08-03 17:00:00',
             'note' => 'gaboleh sampe tanggal 4, sampe tanggal 3 boleh. Item kedua kosong',
-            'is_revised' => true,
+            'is_revision' => true,
+        ]);
+
+        RequestDetail::create([
+            'request_id' => 2,
+            'status_id' => 1,
+            'start_date' => '2024-08-02 08:00:00',
+            'end_date' => '2024-08-08 17:00:00',
         ]);
     }
 }

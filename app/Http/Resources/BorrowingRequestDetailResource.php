@@ -19,7 +19,7 @@ class BorrowingRequestDetailResource extends JsonResource
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'note' => $this->note,
-            'is_revised' => $this->is_revised,
+            'is_revision' => $this->is_revision,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'status' => new BorrowingRequestStatusResource($this->status),

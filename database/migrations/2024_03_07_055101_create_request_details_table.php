@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->text('note')->nullable();
-            $table->boolean('is_revised')->default(false);
+            $table->boolean('is_revision')->default(false);
             $table->timestamps();
         });
     }

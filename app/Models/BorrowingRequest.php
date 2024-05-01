@@ -13,6 +13,11 @@ class BorrowingRequest extends Model
         'sender_id',
         'handler_id',
         'purpose',
+        'is_revised'
+    ];
+
+    protected $casts = [
+        'is_revised' => 'boolean'
     ];
 
     public function scopeFilterByQuery($q, array $filters)
@@ -20,6 +25,15 @@ class BorrowingRequest extends Model
         return $q->when(isset($filters['status_id']), function ($q) use ($filters) {
             $q->where('status_id', $filters['status_id']);
         })->orderBy($filters['sort_by'] ?? 'created_at', $filters['sort_direction'] ?? 'DESC');
+    }
+
+    public function isHandled()
+    {
+        if ($this->details->last()->status_id != 1)
+        {
+            return true;
+        }
+        return false;
     }
 
     public function sender()

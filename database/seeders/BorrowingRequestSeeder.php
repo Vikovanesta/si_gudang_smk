@@ -18,5 +18,11 @@ class BorrowingRequestSeeder extends Seeder
             'handler_id' => 4,
             'purpose' => 'buat praktikum pak',
         ]);
+
+        BorrowingRequest::create([
+            'sender_id' => 2,
+            'handler_id' => 4,
+            'purpose' => 'Untuk keperluan penelitian',
+        ]);
     }
 }

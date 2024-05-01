@@ -14,13 +14,14 @@ class RequestDetail extends Model
         'status_id',
         'start_date',
         'end_date',
+        'is_revision',
         'note',
     ];
 
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
-        'is_revised' => 'boolean',
+        'is_revision' => 'boolean',
     ];
 
     public function request()

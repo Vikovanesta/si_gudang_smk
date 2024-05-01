@@ -17,6 +17,7 @@ class RequestStatusSeeder extends Seeder
             'pending',
             'approved',
             'rejected',
+            'revised'
         ];
 
         foreach ($requestStatuses as $status) {

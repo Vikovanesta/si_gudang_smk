@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('sender_id')->constrained('users');
             $table->foreignId('handler_id')->nullable()->constrained('users');
             $table->text('purpose');
+            $table->boolean('is_revised')->default(false);
             $table->timestamps();
         });
     }

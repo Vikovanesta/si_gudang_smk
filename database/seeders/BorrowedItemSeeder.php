@@ -30,5 +30,17 @@ class BorrowedItemSeeder extends Seeder
             'request_detail_id' => 2,
             'quantity' => 6,
         ]);
+
+        BorrowedItem::create([
+            'item_id' => 2,
+            'request_detail_id' => 3,
+            'quantity' => 5,
+        ]);
+
+        BorrowedItem::create([
+            'item_id' => 3,
+            'request_detail_id' => 3,
+            'quantity' => 5,
+        ]);
     }
 }
