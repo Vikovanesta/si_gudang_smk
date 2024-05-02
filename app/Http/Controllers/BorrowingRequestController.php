@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BorrowingRequestStoreRequest;
 use App\Http\Resources\BorrowingRequestResource;
 use App\Models\BorrowedItem;
+use App\Models\Borrowing;
 use App\Models\BorrowingRequest;
 use App\Models\RequestDetail;
 use App\Traits\HttpResponses;
@@ -122,6 +123,11 @@ class BorrowingRequestController extends Controller
             $borrowingRequest->details->last()->update([
                 'status_id' => 2, // 'Approved'
             ]);
+
+            $borrowing = Borrowing::create([
+                'request_id' => $borrowingRequest->id,
+                'status_id' => 1, // 'Pending'
+            ]);
         }
         elseif ($validated['status'] == 2) {
             $borrowingRequest->details->last()->update([
@@ -174,6 +180,13 @@ class BorrowingRequestController extends Controller
         $borrowingRequest->details->last()->update([
             'status_id' => $validated['is_approved'] ? 2 : 3, // 2: Approved, 3: Rejected
         ]);
+
+        if ($validated['is_approved']) {
+            $borrowing = Borrowing::create([
+                'request_id' => $borrowingRequest->id,
+                'status_id' => 1, // 'Pending'
+            ]);
+        }
 
         return $this->success(
             new BorrowingRequestResource($borrowingRequest),

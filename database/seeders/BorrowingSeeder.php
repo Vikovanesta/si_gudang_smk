@@ -16,8 +16,8 @@ class BorrowingSeeder extends Seeder
         Borrowing::create([
             'request_id' => 1,
             'status_id' => 2,
-            'borrowed_at' => '2021-08-01',
-            'returned_at' => '2021-08-03',
+            'borrowed_at' => '2021-08-01 08:23:12',
+            'returned_at' => '2021-08-03 16:45:58',
         ]);
     }
 }

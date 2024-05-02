@@ -10,6 +10,7 @@ class Borrowing extends Model
     use HasFactory;
 
     protected $fillable = [
+        'request_id',
         'material_id',
         'status_id',
         'quantity',
