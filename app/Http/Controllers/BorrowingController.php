@@ -22,4 +22,15 @@ class BorrowingController extends Controller
 
         return BorrowingResource::collection($borrowings);
     }
+
+    public function indexManagement(Request $request)
+    {
+        Gate::authorize('management');
+
+        $query = $request->query();
+
+        $borrowings = Borrowing::filterByQuery($query)->paginate($query['page_size'] ?? 15);
+
+        return BorrowingResource::collection($borrowings);
+    }
 }

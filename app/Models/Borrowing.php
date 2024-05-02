@@ -22,7 +22,18 @@ class Borrowing extends Model
     {
         return $q->when(isset($filters['status_id']), function ($q) use ($filters) {
             $q->where('status_id', $filters['status_id']);
-        })->orderBy($filters['sort_by'] ?? 'borrowed_at', $filters['sort_direction'] ?? 'DESC');
+        })
+        ->when(isset($filters['sender_id']), function ($q) use ($filters) {
+            $q->whereHas('request', function ($q) use ($filters) {
+                $q->where('sender_id', $filters['sender_id']);
+            });
+        })
+        ->when(isset($filters['handler_id']), function ($q) use ($filters) {
+            $q->whereHas('request', function ($q) use ($filters) {
+                $q->where('handler_id', $filters['handler_id']);
+            });
+        })
+        ->orderBy($filters['sort_by'] ?? 'borrowed_at', $filters['sort_direction'] ?? 'DESC');
     }
 
     public function status()
