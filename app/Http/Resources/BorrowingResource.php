@@ -18,7 +18,8 @@ class BorrowingResource extends JsonResource
             'id' => $this->id,
             'borrowed_at' => $this->borrowed_at,
             'returned_at' => $this->returned_at,
-            'note' => $this->note,
+            'is_overdue' => ($this->returned_at === null && $this->request->requestDetail->end_date < now()) 
+                            || ($this->returned_at !== null && $this->returned_at > $this->request->details->last()->end_date),
             'status' => new BorrowingStatusResource($this->status),
             'request' => new BorrowingRequestResource($this->request),
         ];

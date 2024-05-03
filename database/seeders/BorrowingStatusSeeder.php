@@ -15,9 +15,8 @@ class BorrowingStatusSeeder extends Seeder
     {
         $borrowingStatuses = [
             'pending',
-            'active',
+            'borrowed',
             'returned',
-            'overdue',
             'cancelled',
         ];
 
