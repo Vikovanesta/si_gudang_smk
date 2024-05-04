@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowingController;
 use App\Http\Controllers\BorrowingRequestController;
+use App\Http\Controllers\ItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,8 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
 
     Route::get('/borrowings', [BorrowingController::class,'indexManagement'])->name('indexManagementBorrowings');
     Route::put('/borrowings/{borrowing}', [BorrowingController::class,'update'])->name('updateBorrowing');
+
+    Route::get('/items', [ItemController::class,'index'])->name('indexItems');
 
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 });
