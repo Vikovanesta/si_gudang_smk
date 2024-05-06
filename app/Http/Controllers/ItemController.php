@@ -7,6 +7,7 @@ use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ItemController extends Controller
 {
@@ -34,5 +35,14 @@ class ItemController extends Controller
         ]);
 
         return $this->success('Item created successfully', new ItemResource($item), 201);
+    }
+
+    public function delete(Item $item)
+    {
+        Gate::authorize('management');
+
+        $item->delete();
+
+        return $this->success('Item deleted successfully', null, 200);
     }
 }

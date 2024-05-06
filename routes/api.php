@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
 
     Route::get('/items', [ItemController::class,'index'])->name('indexItems');
     Route::post('/items', [ItemController::class,'store'])->name('storeItem');
+    Route::delete('/items/{item}', [ItemController::class,'delete'])->name('deleteItem');
 
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 });
