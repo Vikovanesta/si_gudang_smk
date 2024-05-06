@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::put('/borrowings/{borrowing}', [BorrowingController::class,'update'])->name('updateBorrowing');
 
     Route::get('/items', [ItemController::class,'index'])->name('indexItems');
+    Route::post('/items', [ItemController::class,'store'])->name('storeItem');
 
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 });
