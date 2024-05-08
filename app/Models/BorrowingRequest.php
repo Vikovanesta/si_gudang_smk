@@ -75,11 +75,6 @@ class BorrowingRequest extends Model
         return $this->belongsTo(User::class, 'handler_id');
     }
 
-    public function borrowing()
-    {
-        return $this->hasOne(Borrowing::class);
-    }
-
     public function details()
     {
         return $this->hasMany(RequestDetail::class, 'request_id');

@@ -31,7 +31,6 @@ class DatabaseSeeder extends Seeder
             BorrowingRequestSeeder::class,
             RequestDetailSeeder::class,
             BorrowedItemSeeder::class,
-            BorrowingSeeder::class,
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\BorrowedItem;
 use App\Models\Borrowing;
 use App\Models\BorrowingRequest;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -40,6 +41,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define(('handle-academic-request'), function ($user, BorrowingRequest $borrowingRequest) {
             return $user->id == $borrowingRequest->sender_id;
+        });
+
+        Gate::define('update-borrowed-item', function ($user, BorrowedItem $borrowedItem) {
+            return ($user->isAdmin() || $user->isLaboran()) && $borrowedItem->requestDetail->status->name == 'approved';
         });
 
         //

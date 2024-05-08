@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BorrowingController;
+use App\Http\Controllers\BorrowedItemController;
 use App\Http\Controllers\BorrowingRequestController;
 use App\Http\Controllers\ItemController;
 use Illuminate\Http\Request;
@@ -30,14 +30,14 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::post('/register/employees', [AuthController::class,'registerEmployee'])->name('registerEmployee');
 
     Route::get('/me/borrowing-requests', [BorrowingRequestController::class,'indexAcademic'])->name('indexAcademicBorrowingRequests');
-    Route::get('/me/borrowings', [BorrowingController::class,'indexAcademic'])->name('indexAcademicBorrowings');
+    Route::get('/me/borrowed-items', [BorrowedItemController::class,'indexAcademic'])->name('indexAcademicBorrowedItems');
 
     Route::get('/borrowing-requests', [BorrowingRequestController::class,'indexManagement'])->name('indexManagementBorrowingRequests');
     Route::post('/borrowing-requests', [BorrowingRequestController::class,'store'])->name('storeBorrowingRequest');
     Route::put('/borrowing-requests/{borrowingRequest}', [BorrowingRequestController::class,'handle'])->name('handleBorrowingRequest');
 
-    Route::get('/borrowings', [BorrowingController::class,'indexManagement'])->name('indexManagementBorrowings');
-    Route::put('/borrowings/{borrowing}', [BorrowingController::class,'update'])->name('updateBorrowing');
+    Route::get('/borrowed-items', [BorrowedItemController::class,'indexManagement'])->name('indexManagementBorrowedItems');
+    Route::put('/borrowed-items/{borrowedItem}', [BorrowedItemController::class,'update'])->name('updateBorrowedItem');
 
     Route::get('/items', [ItemController::class,'index'])->name('indexItems');
     Route::post('/items', [ItemController::class,'store'])->name('storeItem');

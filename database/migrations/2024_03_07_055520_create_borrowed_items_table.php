@@ -16,6 +16,10 @@ return new class extends Migration
             $table->foreignId('item_id')->constrained('items');
             $table->foreignId('request_detail_id')->constrained('request_details');
             $table->integer('quantity');
+            $table->integer('returned_quantity')->default(0);
+            $table->dateTime('borrowed_at')->nullable();
+            $table->dateTime('returned_at')->nullable();
+            $table->boolean('is_cancelled')->default(false);
             $table->timestamps();
         });
     }
