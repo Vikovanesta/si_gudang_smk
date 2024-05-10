@@ -16,6 +16,7 @@ class Item extends Model
         'name',
         'stock',
         'max_stock',
+        'image',
     ];
 
     public function scopeFilterByQuery($q, array $filters)

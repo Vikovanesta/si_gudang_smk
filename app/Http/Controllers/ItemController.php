@@ -7,6 +7,7 @@ use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class ItemController extends Controller
@@ -26,13 +27,27 @@ class ItemController extends Controller
     {
         $validated = $request->validated();
 
-        $item = Item::create([
-            'warehouse_id' => $validated['warehouse_id'],
-            'material_id' => $validated['material_id'],
-            'name' => $validated['name'],
-            'stock' => $validated['max_stock'],
-            'max_stock' => $validated['max_stock'],
-        ]);
+        DB::transaction(function () use ($validated) {
+            $item = Item::create([
+                'warehouse_id' => $validated['warehouse_id'],
+                'material_id' => $validated['material_id'],
+                'name' => $validated['name'],
+                'stock' => $validated['max_stock'],
+                'max_stock' => $validated['max_stock'],
+            ]);
+
+            if (isset($validated['image'])) {
+                $image = $validated['image'];
+                $directory = 'items/images';
+                $image->storeAs('public/' . $directory, $image->hashName(), 'local');
+                $image_url = url('storage/' . $directory . $image->hashName());
+
+                $item->update(['image' => $image_url]);
+            }
+        });
+
+        $item = Item::latest()->first();
+
 
         return $this->success('Item created successfully', new ItemResource($item), 201);
     }

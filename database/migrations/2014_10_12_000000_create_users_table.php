@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone');
             $table->boolean('is_verified')->default(false);
+            $table->string('profile_image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

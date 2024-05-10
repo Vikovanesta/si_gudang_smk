@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('stock');
             $table->integer('max_stock');
+            $table->string('image')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

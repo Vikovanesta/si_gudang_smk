@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
+        'profile_image',
     ];
 
     /**
@@ -82,15 +83,5 @@ class User extends Authenticatable
     public function laboran()
     {
         return $this->hasOne(Laboran::class);
-    }
-
-    public function sentRequests()
-    {
-        return $this->hasMany(Request::class, 'sender_id');
-    }
-
-    public function handledRequests()
-    {
-        return $this->hasMany(Request::class, 'handler_id');
     }
 }
