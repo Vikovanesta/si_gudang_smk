@@ -42,7 +42,6 @@ class AuthController extends Controller
     public function registerStudent(StudentRegistrationRequest $request)
     {
         $validated = $request->validated();
-        $user = Auth::user();
 
         if ($this->isStudentRegistered($validated['nisn'], $validated['email'])) {
             return $this->error(
@@ -52,46 +51,13 @@ class AuthController extends Controller
             );
         }
 
-        if ($user && ($user->isLaboran() || $user->isAdmin())) {
-            $newUser = User::create([
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'phone' => $validated['phone'],
-                'role_id' => 2
-            ]);
-            
-            Student::create([
-                'user_id' => $newUser->id,
-                'class_id' => $validated['class_id'],
-                'name' => $validated['name'],
-                'nisn' => $validated['nisn'],
-                'year_in' => $validated['year_in'],
-                'date_of_birth' => $validated['date_of_birth']
-            ]);
+        $studentRegistration = StudentRegistration::create($validated);
 
-            return $this->success(
-                new UserResource($newUser), 
-                'Student has been registered', 
-                201
-            );
-        }
-        else if (!$user) {
-            $studentRegistration = StudentRegistration::create($validated);
-    
-            return $this->success(
-                new StudentRegistrationResource($studentRegistration), 
-                'Registration has been sent. Please wait for confirmation', 
-                201
-            );
-        }
-        else {
-            return $this->error(
-                null,
-                'Unauthorized',
-                401
-            );
-        }
-
+        return $this->success(
+            new StudentRegistrationResource($studentRegistration), 
+            'Registration has been sent. Please wait for confirmation', 
+            201
+        );
     }
 
     public function registerEmployee(EmployeeRegistrationRequest $request) 
