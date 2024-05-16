@@ -37,6 +37,12 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::put('/students/{student}', [StudentController::class,'update'])->name('updateStudent');
     Route::delete('/students/{student}', [StudentController::class,'delete'])->name('deleteStudent');
 
+    Route::get('/teachers', [TeacherController::class,'index'])->name('indexTeachers');
+    Route::post('/teachers', [TeacherController::class,'store'])->name('storeTeacher');
+    Route::get('/teachers/{teacher}', [TeacherController::class,'show'])->name('showTeacher');
+    Route::put('/teachers/{teacher}', [TeacherController::class,'update'])->name('updateTeacher');
+    Route::delete('/teachers/{teacher}', [TeacherController::class,'delete'])->name('deleteTeacher');
+
     Route::get('/me/borrowing-requests', [BorrowingRequestController::class,'indexAcademic'])->name('indexAcademicBorrowingRequests');
     Route::get('/me/borrowed-items', [BorrowedItemController::class,'indexAcademic'])->name('indexAcademicBorrowedItems');
 
