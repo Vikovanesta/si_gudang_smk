@@ -25,9 +25,9 @@ class StudentUpdateRequest extends FormRequest
         return [
             'class_id' => 'nullable|int',
             'name' => 'nullable|string',
-            'email' => 'nullable|string|email',
+            'email' => 'nullable|string|email|unique:users,email,' . $this->student->user_id,
             'phone' => 'nullable|string',
-            'nisn' => 'nullable|int',
+            'nisn' => 'nullable|int|unique:students,nisn,',
             'year_in' => 'nullable|int',
             'date_of_birth' => 'nullable|date',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'

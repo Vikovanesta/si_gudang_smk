@@ -25,10 +25,10 @@ class StudentStoreRequest extends FormRequest
         return [
             'class_id' => 'required|int',
             'name' => 'required|string',
-            'email' => 'required|string|email',
+            'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:8',
             'phone' => 'required|string',
-            'nisn' => 'required|int',
+            'nisn' => 'required|int|unique:students,nisn',
             'year_in' => 'required|int',
             'date_of_birth' => 'required|date',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'

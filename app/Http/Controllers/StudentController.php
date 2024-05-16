@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentStoreRequest;
+use App\Http\Requests\StudentUpdateRequest;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
 use App\Models\User;
@@ -75,7 +76,7 @@ class StudentController extends Controller
         return $this->success(new StudentResource($student), "Student created successfully", 201);
     }
 
-    public function update(StudentStoreRequest $request, Student $student)
+    public function update(StudentUpdateRequest $request, Student $student)
     {
         $validated = $request->validated();
 
