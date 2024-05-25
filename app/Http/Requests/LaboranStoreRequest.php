@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class StudentStoreRequest extends FormRequest
+class LaboranStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,11 @@ class StudentStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'class_id' => 'required|int',
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:8',
             'phone' => 'required|string',
-            'nisn' => 'required|int|unique:students,nisn',
-            'year_in' => 'required|int',
-            'date_of_birth' => 'required|date_format:Y-m-d',
+            'nip' => 'required|int|unique:laborans,nip',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }

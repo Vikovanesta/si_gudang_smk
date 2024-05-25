@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowedItemController;
 use App\Http\Controllers\BorrowingRequestController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LaboranController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Http\Request;
@@ -42,6 +43,12 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/teachers/{teacher}', [TeacherController::class,'show'])->name('showTeacher');
     Route::put('/teachers/{teacher}', [TeacherController::class,'update'])->name('updateTeacher');
     Route::delete('/teachers/{teacher}', [TeacherController::class,'delete'])->name('deleteTeacher');
+
+    Route::get('/laborans', [LaboranController::class,'index'])->name('indexLaborans');
+    Route::post('/laborans', [LaboranController::class,'store'])->name('storeLaboran');
+    Route::get('/laborans/{laboran}', [LaboranController::class,'show'])->name('showLaboran');
+    Route::put('/laborans/{laboran}', [LaboranController::class,'update'])->name('updateLaboran');
+    Route::delete('/laborans/{laboran}', [LaboranController::class,'delete'])->name('deleteLaboran');
 
     Route::get('/me/borrowing-requests', [BorrowingRequestController::class,'indexAcademic'])->name('indexAcademicBorrowingRequests');
     Route::get('/me/borrowed-items', [BorrowedItemController::class,'indexAcademic'])->name('indexAcademicBorrowedItems');

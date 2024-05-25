@@ -20,15 +20,21 @@ class StudentController extends Controller
 
     public function index()
     {
+        
         $query = request()->query();
-
+        
         $students = Student::filterByQuery($query)->paginate($query['page_size'] ?? 15);
-
-        return $this->successResponse($students);
+        
+        return StudentResource::collection($students);
     }
 
     public function show(Student $student)
     {
+        $student->load([
+            'user',
+            'class'
+        ]);
+
         return $this->success(new StudentResource($student), "Student retrieved successfully");
     }
 

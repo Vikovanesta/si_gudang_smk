@@ -3,16 +3,16 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
-class StudentStoreRequest extends FormRequest
+class LaboranUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Gate::allows('management');
+        return Auth::user()->id == $this->laboran->user->id;
     }
 
     /**
@@ -23,14 +23,11 @@ class StudentStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'class_id' => 'required|int',
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'phone' => 'required|string',
-            'nisn' => 'required|int|unique:students,nisn',
-            'year_in' => 'required|int',
-            'date_of_birth' => 'required|date_format:Y-m-d',
+            'name' => 'nullable|string',
+            'email' => 'nullable|string|email|unique:users,email,' . $this->laboran->user->id,
+            'phone' => 'nullable|string',
+            'nip' => 'nullable|int|unique:laborans,nip,',
+            'date_of_birth' => 'nullable|date',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }

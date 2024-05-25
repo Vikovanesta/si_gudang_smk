@@ -24,7 +24,7 @@ class TeacherController extends Controller
 
         $teachers = Teacher::filterByQuery($query)->paginate($query['page_size'] ?? 15);
 
-        return $this->success(new TeacherResource($teachers), "Teachers retrieved successfully");
+        return TeacherResource::collection($teachers);
     }
 
     public function show(Teacher $teacher)

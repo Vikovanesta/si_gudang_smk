@@ -28,7 +28,6 @@ class TeacherStoreRequest extends FormRequest
             'password' => 'required|string|min:8',
             'phone' => 'required|string',
             'nip' => 'required|int|unique:teachers,nip',
-            'date_of_birth' => 'required|date',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
