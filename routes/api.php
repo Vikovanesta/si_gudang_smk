@@ -7,6 +7,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LaboranController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +64,11 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/items', [ItemController::class,'index'])->name('indexItems');
     Route::post('/items', [ItemController::class,'store'])->name('storeItem');
     Route::delete('/items/{item}', [ItemController::class,'delete'])->name('deleteItem');
+
+    Route::get('/warehouses', [WarehouseController::class,'index'])->name('indexWarehouses');
+    Route::post('/warehouses', [WarehouseController::class,'store'])->name('storeWarehouse');
+    Route::put('/warehouses/{warehouse}', [WarehouseController::class,'update'])->name('updateWarehouse');
+    Route::delete('/warehouses/{warehouse}', [WarehouseController::class,'delete'])->name('deleteWarehouse');
 
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 });
