@@ -5,6 +5,7 @@ use App\Http\Controllers\BorrowedItemController;
 use App\Http\Controllers\BorrowingRequestController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LaboranController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\WarehouseController;
@@ -70,6 +71,11 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::post('/warehouses', [WarehouseController::class,'store'])->name('storeWarehouse');
     Route::put('/warehouses/{warehouse}', [WarehouseController::class,'update'])->name('updateWarehouse');
     Route::delete('/warehouses/{warehouse}', [WarehouseController::class,'delete'])->name('deleteWarehouse');
+
+    Route::get('/materials', [MaterialController::class,'index'])->name('indexMaterials');
+    Route::post('/materials', [MaterialController::class,'store'])->name('storeMaterial');
+    Route::put('/materials/{material}', [MaterialController::class,'update'])->name('updateMaterial');
+    Route::delete('/materials/{material}', [MaterialController::class,'delete'])->name('deleteMaterial');
 
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 });
