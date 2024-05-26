@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class ItemStoreRequest extends FormRequest
+class ItemUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,9 @@ class ItemStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'material_id' => 'required|exists:materials,id',
-            'name' => 'required|string',
-            'max_stock' => 'required|integer',
+            'warehouse_id' => 'nullable|exists:warehouses,id',
+            'material_id' => 'nullable|exists:materials,id',
+            'name' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }

@@ -102,10 +102,10 @@ class StudentController extends Controller
             ]); 
 
             if (isset($validated['profile_image'])) {
-                $profileImage = $validated['profile_image'];
+                $image = $validated['profile_image'];
                 $directory = 'students/images';
-                $profileImage->storeAs('public/' . $directory, $profileImage->hashName(), 'local');
-                $profileImageUrl = url('/storage/' . $directory . $profileImage->hashName());
+                $image->storeAs('public/' . $directory, $image->hashName(), 'local');
+                $profileImageUrl = url('/storage/' . $directory . $image->hashName());
 
                 Storage::disk('local')->delete('public/' . $directory . basename($user->profile_image));
 
