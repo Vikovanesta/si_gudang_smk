@@ -1,0 +1,47 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+
+    - name: Deploy to production
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VPS_IP }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/si_gudang_smk
+
+          set -e
+          echo "Deploying application ..."
+
+          (php artisan down --message 'The app is being updated. Please try again in a minute.') || true
+
+          git fetch origin main
+          git reset --hard origin/main
+
+          php artisan migrate --force
+          php artisan storage:link
+          php artisan optimize
+
+          PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;")
+          echo "" | sudo -S service php${PHP_VERSION}-fpm reload
+
+          php artisan up
+
+          echo "Application deployed!"
