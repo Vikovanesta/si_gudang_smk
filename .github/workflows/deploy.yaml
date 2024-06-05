@@ -20,7 +20,7 @@ jobs:
         username: ${{ secrets.VPS_USERNAME }}
         key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/si_gudang_smk
+          cd /var/www/html/si_gudang_smk
 
           set -e
           echo "Deploying application ..."
