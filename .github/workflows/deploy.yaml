@@ -25,6 +25,8 @@ jobs:
           set -e
           echo "Deploying application ..."
 
+          git config --global --add safe.directory /var/www/html/si_gudang_smk
+
           (php artisan down --message 'The app is being updated. Please try again in a minute.') || true
 
           git fetch origin main
