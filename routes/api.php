@@ -51,7 +51,8 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/laborans/{laboran}', [LaboranController::class,'show'])->name('showLaboran');
     Route::put('/laborans/{laboran}', [LaboranController::class,'update'])->name('updateLaboran');
     Route::delete('/laborans/{laboran}', [LaboranController::class,'delete'])->name('deleteLaboran');
-
+    
+    Route::get('/me', [AuthController::class,'me'])->name('me');
     Route::get('/me/borrowing-requests', [BorrowingRequestController::class,'indexAcademic'])->name('indexAcademicBorrowingRequests');
     Route::get('/me/borrowed-items', [BorrowedItemController::class,'indexAcademic'])->name('indexAcademicBorrowedItems');
 

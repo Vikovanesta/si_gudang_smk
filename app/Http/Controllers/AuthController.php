@@ -193,6 +193,11 @@ class AuthController extends Controller
         ], 'Login Success', 200);
     }
 
+    public function me()
+    {
+        return $this->success(new UserResource(auth()->user()), 'User data retrieved', 200);
+    }
+
     /**
      * Logout
      * 
