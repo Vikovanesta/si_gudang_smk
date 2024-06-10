@@ -4,6 +4,7 @@
 /public/hot
 /public/storage
 /storage/*.key
+/resources/views/scribe
 /vendor
 .env
 .env.backup
