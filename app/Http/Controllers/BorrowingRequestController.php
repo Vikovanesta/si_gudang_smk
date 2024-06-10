@@ -13,10 +13,36 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
+/**
+ * @group Borrowing Request
+ * 
+ * APIs for managing borrowing requests
+ * 
+ * @authenticated
+ */
 class BorrowingRequestController extends Controller
 {
     use HttpResponses;
 
+    /**
+     * Get borrowing requests
+     * 
+     * Get a list of borrowing requests requested by current user
+     *
+     * @queryParam status_id integer The id of the status. Example: 1 
+     * @queryParam sender_id integer The id of the sender. Example: 1
+     * @queryParam handler_id integer The id of the handler. Example: 1
+     * @queryParam is_revised boolean The status of the borrowing request. Example: true
+     * @queryParam item_id integer The id of the item. Example: 1
+     * @queryParam start_date date The start date of the borrowing request. Example: 2021-01-01
+     * @queryParam end_date date The end date of the borrowing request. Example: 2021-01-01
+     * @queryParam page integer The page number. Example: 1
+     * @queryParam page_size integer The number of borrowing requests to display per page. Example: 15
+     * @queryParam sort_by string The column to sort by. Example: purpose
+     * @queryParam sort_direction string The direction to sort. Example: asc
+     * 
+     * @subgroup Academic
+     */
     public function indexAcademic(Request $request)
     {
         Gate::authorize('academic');
@@ -27,9 +53,35 @@ class BorrowingRequestController extends Controller
             ->filterByQuery($query)
             ->paginate($query['page_size'] ?? 15);
 
+        $borrowingRequests->load([
+            'sender',
+            'handler',
+            'details.status',
+            'details.borrowedItems.item',
+        ]);
+
         return BorrowingRequestResource::collection($borrowingRequests);
     }
 
+    /**
+     * Get borrowing requests
+     * 
+     * Get a list of borrowing requests
+     *
+     * @queryParam status_id integer The id of the status. Example: 1 
+     * @queryParam sender_id integer The id of the sender. Example: 1
+     * @queryParam handler_id integer The id of the handler. Example: 1
+     * @queryParam is_revised boolean The status of the borrowing request. Example: true
+     * @queryParam item_id integer The id of the item. Example: 1
+     * @queryParam start_date date The start date of the borrowing request. Example: 2021-01-01
+     * @queryParam end_date date The end date of the borrowing request. Example: 2021-01-01
+     * @queryParam page integer The page number. Example: 1
+     * @queryParam page_size integer The number of borrowing requests to display per page. Example: 15
+     * @queryParam sort_by string The column to sort by. Example: purpose
+     * @queryParam sort_direction string The direction to sort. Example: asc
+     * 
+     * @subgroup Management
+     */
     public function indexManagement(Request $request)
     {
         Gate::authorize('management');
@@ -39,9 +91,48 @@ class BorrowingRequestController extends Controller
         $borrowingRequests = BorrowingRequest::filterByQuery($query)
             ->paginate($query['page_size'] ?? 15);
 
+        $borrowingRequests->load([
+            'sender',
+            'handler',
+            'details.status',
+            'details.borrowedItems.item',
+        ]);
+
         return BorrowingRequestResource::collection($borrowingRequests);
     }
 
+    /**
+     * Get borrowing request details
+     * 
+     * @urlParam borrowing_request required The ID of the borrowing request. Example: 1
+     */
+    public function show(BorrowingRequest $borrowingRequest)
+    {
+        Gate::authorize('view-borrowing-request', $borrowingRequest);
+
+        $borrowingRequest->load([
+            'sender',
+            'handler',
+            'details.status',
+            'details.borrowedItems.item',
+        ]);
+
+        return $this->success(
+            new BorrowingRequestResource($borrowingRequest),
+            'Borrowing request retrieved successfully'
+        );
+    }
+
+    /**
+     * Create a new borrowing request
+     * 
+     * @bodyParam purpose string required The purpose of the borrowing request. Example: For research
+     * @bodyParam start_date date required The start date of borrowing Example: 2021-01-01 08:00:00
+     * @bodyParam end_date date required The return date of borrowing. Example: 2021-01-01 16:00:00
+     * @bodyParam borrowed_items array required The items to be borrowed. Example: [{"item_id": 1, "quantity": 2}]
+     * 
+     * @subgroup Academic
+     */
     public function store(BorrowingRequestStoreRequest $request)
     {
         $validated = $request->validated();
@@ -74,6 +165,22 @@ class BorrowingRequestController extends Controller
         );
     }
 
+    /**
+     * Handle borrowing request
+     * 
+     * Handle a borrowing request
+     * 
+     * If the user is in Academic, can only send is_approved.
+     * 
+     * @urlParam borrowing_request required The ID of the borrowing request. Example: 1
+     * 
+     * @bodyParam status int required The status of the borrowing request (1: Approved, 2: Rejected, 3: Revised). Example: 1
+     * @bodyParam start_date date The start date of borrowing Example: 2021-01-01 08:00:00
+     * @bodyParam end_date date The return date of borrowing. Example: 2021-01-01 16:00:00
+     * @bodyParam borrowed_items array The items to be borrowed. Example: [{"item_id": 1, "quantity": 2}]
+     * @bodyParam note string The note for the revised borrowing request. Example: Revised borrowing request
+     * @bodyParam is_approved boolean The approval status of the borrowing request. Example: true
+     */
     public function handle(Request $request, BorrowingRequest $borrowingRequest)
     {
         if ($borrowingRequest->isHandled()) {

@@ -28,6 +28,46 @@ class AuthController extends Controller
 {
     use HttpResponses;
 
+    /**
+     * Login
+     * 
+     * Login to the application
+     * 
+     * @bodyParam name string required The name of the user. Example: student
+     * @bodyParam email string required The email of the user. Example: student@mail.com
+     * @bodyParam password string required The password of the user. Example: password
+     * */
+    public function login(AuthLoginRequest $request)
+    {
+        $validated = $request->validated();
+
+        $user = User::where('email', $validated['email'])->first();
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => 'User not found',
+                    'errors' => [
+                        'message' => 'Incorrect email or password',
+                    ]
+                ], 401));
+        }
+
+        $token = $user->createToken('access-token')->plainTextToken;
+
+        return $this->success([
+            'user' => new UserResource($user),
+            'token' => $token
+        ], 'Login Success', 200);
+    }
+
+    /**
+     * List Student Registration
+     * 
+     * Get list of student registration
+     * 
+     * @subgroup Management
+     * @authenticated
+     * */
     public function indexRegistration(Request $request)
     {
         Gate::authorize('management');
@@ -39,6 +79,20 @@ class AuthController extends Controller
         return StudentRegistrationResource::collection($studentRegistrations);
     }
 
+    /**
+     * Register student
+     * 
+     * Self registration for student
+     * 
+     * @bodyParam class_id integer required The class id of the student. Example: 1
+     * @bodyParam name string required The name of the student. Example: Abdul al-karim
+     * @bodyParam email string required The email of the student. Example: abdull@mail.com
+     * @bodyParam password string required The password of the student. Example: password
+     * @bodyParam phone string required The phone number of the student. Example: 081234567890
+     * @bodyParam nisn string required The NISN of the student. Example: 1234567890
+     * @bodyParam year_in integer required The year in of the student. Example: 2021
+     * @bodyParam date_of_birth date required The date of birth of the student. Example: 2000-01-01
+     * */
     public function registerStudent(StudentRegistrationRequest $request)
     {
         $validated = $request->validated();
@@ -60,43 +114,17 @@ class AuthController extends Controller
         );
     }
 
-    public function registerEmployee(EmployeeRegistrationRequest $request) 
-    {
-        Gate::authorize('management');
-
-        $validated = $request->validated();
-
-        $newUser = User::create([
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'phone' => $validated['phone'],
-            'role_id' => $validated['role_id']
-        ]);
-        
-        if ($validated['role_id'] === 3) {
-            $employee = Teacher::create([
-                'user_id' => $newUser->id,
-                'nip' => $validated['nip'],
-                'name' => $validated['name']
-            ]);
-            $message = 'Teacher has been registered';
-        }
-        else if ($validated['role_id'] === 4){
-            $employee = Laboran::create([
-                'user_id' => $newUser->id,
-                'nip' => $validated['nip'],
-                'name' => $validated['name']
-            ]);
-            $message = 'Laboran has been registered';
-        }  
-
-        return $this->success(
-            new UserResource($newUser), 
-            $message, 
-            201
-        );
-    }
-
+    /**
+     * Verify student registration
+     * 
+     * Verify student registration
+     * 
+     * @urlParam id integer required The id of the student registration. Example: 1
+     * @bodyParam verify boolean required The verification status. Example: true
+     * 
+     * @subgroup Management
+     * @authenticated
+     * */
     public function verifyRegistration(Request $request, $id)
     {
         Gate::authorize('management');
@@ -162,37 +190,12 @@ class AuthController extends Controller
     }
 
     /**
-     * Login
+     * Get my data
      * 
-     * Login to the application
+     * Get current logged in user data
      * 
-     * @bodyParam name string required The name of the user. Example: merchant
-     * @bodyParam email string required The email of the user. Example: merchant@mail.com
-     * @bodyParam password string required The password of the user. Example: password
+     * @authenticated
      * */
-    public function login(AuthLoginRequest $request)
-    {
-        $validated = $request->validated();
-
-        $user = User::where('email', $validated['email'])->first();
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
-            throw new HttpResponseException(
-                response()->json([
-                    'message' => 'User not found',
-                    'errors' => [
-                        'message' => 'Incorrect email or password',
-                    ]
-                ], 401));
-        }
-
-        $token = $user->createToken('access-token')->plainTextToken;
-
-        return $this->success([
-            'user' => new UserResource($user),
-            'token' => $token
-        ], 'Login Success', 200);
-    }
-
     public function me()
     {
         return $this->success(new UserResource(auth()->user()), 'User data retrieved', 200);

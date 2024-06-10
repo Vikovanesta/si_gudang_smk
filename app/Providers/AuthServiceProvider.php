@@ -47,6 +47,13 @@ class AuthServiceProvider extends ServiceProvider
             return ($user->isAdmin() || $user->isLaboran()) && $borrowedItem->requestDetail->status->name == 'approved';
         });
 
-        //
+        Gate::define('view-borrowed-item', function ($user, BorrowedItem $borrowedItem) {
+            return $user->isAdmin() || $user->isLaboran() || $borrowedItem->requestDetail->request->sender_id == $user->id;
+        });
+
+        Gate::define('view-borrowing-request', function ($user, BorrowingRequest $borrowingRequest) {
+            return $user->isAdmin() || $user->isLaboran() || $borrowingRequest->sender_id == $user->id;
+        });
+
     }
 }

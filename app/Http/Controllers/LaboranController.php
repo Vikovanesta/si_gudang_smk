@@ -14,10 +14,31 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @group Laboran
+ * 
+ * APIs for managing laborans
+ * 
+ * @authenticated
+ */
 class LaboranController extends Controller
 {
     use HttpResponses;
 
+    /**
+     * Get laborans
+     * 
+     * Get a list of laborans
+     * 
+     * @queryParam name string The name of the laboran. Example: laboran
+     * @queryParam nip string The nip of the laboran. Example: 123456789
+     * @queryParam min_date_of_birth date The minimum date of birth of the laboran. Example: 2000-01-01
+     * @queryParam max_date_of_birth date The maximum date of birth of the laboran. Example: 2000-01-01
+     * @queryParam page integer The page number. Example: 1
+     * @queryParam page_size integer The number of laborans to display per page. Example: 15
+     * @queryParam sort_by string The column to sort by. Example: name
+     * @queryParam sort_direction string The direction to sort. Example: asc
+     */
     public function index()
     {
         $query = request()->query();
@@ -27,6 +48,12 @@ class LaboranController extends Controller
         return LaboranResource::collection($laborans);
     }
 
+
+    /**
+     * Get laboran details
+     * 
+     * @urlParam laboran required The ID of the laboran. Example: 1
+     */
     public function show(Laboran $laboran)
     {
         $laboran->load([
@@ -36,6 +63,21 @@ class LaboranController extends Controller
         return $this->success(new LaboranResource($laboran), "Laboran retrieved successfully");
     }
 
+    /**
+     * Add laboran
+     * 
+     * Add a new laboran
+     * 
+     * @bodyParam name string required The name of the laboran. Example: laboran
+     * @bodyParam email string required The email of the laboran. Example: laboran@mail.com
+     * @bodyParam password string required The password of the laboran. Example: password
+     * @bodyParam phone string required The phone of the laboran. Example: 081234567890
+     * @bodyParam nip string required The nip of the laboran. Example: 123456789
+     * @bodyParam date_of_birth date The date of birth of the laboran. Example: 2000-01-01
+     * @bodyParam profile_image file The profile image of the laboran.
+     * 
+     * @subgroup Management
+     */
     public function store(LaboranStoreRequest $request)
     {
         $validated = $request->validated();
@@ -71,6 +113,20 @@ class LaboranController extends Controller
         return $this->success(new LaboranResource($laboran), "Laboran created successfully");
     }
 
+    /**
+     * Update laboran
+     * 
+     * @urlParam laboran required The ID of the laboran. Example: 1
+     * 
+     * @bodyParam name string The name of the laboran. Example: laboran
+     * @bodyParam email string The email of the laboran. Example: laboran@mail.com
+     * @bodyParam phone string The phone of the laboran. Example: 081234567890
+     * @bodyParam nip string The nip of the laboran. Example: 123456789
+     * @bodyParam date_of_birth date The date of birth of the laboran. Example: 2000-01-01
+     * @bodyParam profile_image file The profile image of the laboran.
+     * 
+     * @subgroup Management
+     */
     public function update(LaboranUpdateRequest $request, Laboran $laboran)
     {
         $validated = $request->validated();
@@ -104,6 +160,13 @@ class LaboranController extends Controller
         return $this->success(new LaboranResource($laboran), "Laboran updated successfully");
     }
 
+    /**
+     * Delete laboran
+     * 
+     * @urlParam laboran required The ID of the laboran. Example: 1
+     * 
+     * @subgroup Management
+     */
     public function destroy(Laboran $laboran)
     {
         Gate::authorize('management');

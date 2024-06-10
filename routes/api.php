@@ -27,6 +27,14 @@ Route::group(['middleware' => ['auth.opt'], 'prefix' => 'v1'], function(){
     Route::post('/register/students', [AuthController::class,'registerStudent'])->name('registerStudent');
     Route::post('/login', [AuthController::class,'login'])->name('auth');
     // Route::post('/register', [AuthController::class,'register'])->name('register');
+
+    Route::get('/postman', function () {
+        return response()->file(storage_path('/app/scribe/collection.json'));
+    })->name('scribe.postman');
+
+    Route::get('/openapi', function () {
+        return response()->file(storage_path('/app/scribe/openapi.yaml'));
+    })->name('scribe.openapi');
 });
 
 Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {

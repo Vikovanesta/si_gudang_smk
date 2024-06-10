@@ -28,6 +28,7 @@ class LaboranStoreRequest extends FormRequest
             'password' => 'required|string|min:8',
             'phone' => 'required|string',
             'nip' => 'required|int|unique:laborans,nip',
+            'date_of_birth' => 'nullable|date',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }

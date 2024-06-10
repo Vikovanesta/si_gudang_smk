@@ -34,6 +34,7 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'is_verified' => $this->is_verified,
+            'profile_image_url' => $this->profile_image,
             'role' => new RoleResource($this->role),
             'profile' => $profile,
         ];
