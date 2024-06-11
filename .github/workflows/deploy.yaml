@@ -21,26 +21,4 @@ jobs:
         key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         script: |
           cd /var/www/html/si_gudang_smk
-
-          set -e
-          echo "Deploying application ..."
-
-          sudo git config --global --add safe.directory /var/www/html/si_gudang_smk
-
-          php artisan down || true
-
-          sudo git fetch origin main
-          sudo git reset --hard origin/main
-
-          php artisan migrate --force
-          php artisan storage:link
-          php artisan optimize
-
-          sudo php artisan scribe:generate
-
-          PHP_VERSION=$(php -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;")
-          echo "" | sudo -S service php${PHP_VERSION}-fpm reload
-
-          php artisan up
-
-          echo "Application deployed!"
+          ./server_deploy.sh
