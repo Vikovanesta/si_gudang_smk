@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowedItemController;
 use App\Http\Controllers\BorrowingRequestController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LaboranController;
 use App\Http\Controllers\MaterialController;
@@ -59,10 +60,13 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/laborans/{laboran}', [LaboranController::class,'show'])->name('showLaboran');
     Route::put('/laborans/{laboran}', [LaboranController::class,'update'])->name('updateLaboran');
     Route::delete('/laborans/{laboran}', [LaboranController::class,'delete'])->name('deleteLaboran');
-    
+
     Route::get('/me', [AuthController::class,'me'])->name('me');
     Route::get('/me/borrowing-requests', [BorrowingRequestController::class,'indexAcademic'])->name('indexAcademicBorrowingRequests');
     Route::get('/me/borrowed-items', [BorrowedItemController::class,'indexAcademic'])->name('indexAcademicBorrowedItems');
+    Route::get('/me/carts', [CartController::class,'index'])->name('indexCarts');
+    Route::post('/me/carts', [CartController::class,'store'])->name('storeCart');
+    Route::delete('/me/carts/{item}', [CartController::class,'destroy'])->name('destroyCart');
 
     Route::get('/borrowing-requests', [BorrowingRequestController::class,'indexManagement'])->name('indexManagementBorrowingRequests');
     Route::post('/borrowing-requests', [BorrowingRequestController::class,'store'])->name('storeBorrowingRequest');
@@ -91,9 +95,9 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
 
 /**
  * Fallback route
- * 
+ *
  * This route will be used if the requested route is not found.
- * 
+ *
  * @group Fallback
  */
 Route::fallback(function(){

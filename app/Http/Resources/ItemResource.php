@@ -14,12 +14,24 @@ class ItemResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // A function to check if the item is in the user cart
+        $is_in_cart = function ($item) {
+            $carts = auth()->user()->carts;
+            foreach ($carts as $cart) {
+                if ($cart->item_id === $item->id) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'stock' => $this->stock,
             'max_stock' => $this->max_stock,
             'image_url' => $this->image,
+            'is_in_cart' => $is_in_cart($this),
             'material' => new MaterialResource($this->material),
             'warehouse' => new WarehouseResource($this->warehouse),
         ];

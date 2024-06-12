@@ -75,7 +75,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Student::class);
     }
-    
+
     public function teacher()
     {
         return $this->hasOne(Teacher::class);
@@ -84,5 +84,10 @@ class User extends Authenticatable
     public function laboran()
     {
         return $this->hasOne(Laboran::class);
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
     }
 }
