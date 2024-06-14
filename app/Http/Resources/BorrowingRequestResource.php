@@ -26,6 +26,7 @@ class BorrowingRequestResource extends JsonResource
             'details' => BorrowingRequestDetailResource::collection($sortedDetails),
             'sender' => new UserResource($this->sender),
             'handler' => new UserResource($this->handler),
+            'school_subject' => new SubjectResource($this->schoolSubject),
         ];
     }
 }

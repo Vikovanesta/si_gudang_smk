@@ -12,6 +12,7 @@ class BorrowingRequest extends Model
     protected $fillable = [
         'sender_id',
         'handler_id',
+        'school_subject_id',
         'purpose',
         'is_revised'
     ];
@@ -32,6 +33,9 @@ class BorrowingRequest extends Model
         })
         ->when(isset($filters['handler_id']), function ($q) use ($filters) {
             $q->where('handler_id', $filters['handler_id']);
+        })
+        ->when(isset($filters['school_subject_id']), function ($q) use ($filters) {
+            $q->where('school_subject_id', $filters['school_subject_id']);
         })
         ->when(isset($filters['is_revised']), function ($q) use ($filters) {
             $q->where('is_revised', $filters['is_revised']);
@@ -78,5 +82,10 @@ class BorrowingRequest extends Model
     public function details()
     {
         return $this->hasMany(RequestDetail::class, 'request_id');
+    }
+
+    public function schoolSubject()
+    {
+        return $this->belongsTo(SchoolSubject::class, 'school_subject_id');
     }
 }

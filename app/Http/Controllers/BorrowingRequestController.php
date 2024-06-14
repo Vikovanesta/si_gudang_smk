@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Gate;
 
 /**
  * @group Borrowing Request
- * 
+ *
  * APIs for managing borrowing requests
- * 
+ *
  * @authenticated
  */
 class BorrowingRequestController extends Controller
@@ -26,10 +26,10 @@ class BorrowingRequestController extends Controller
 
     /**
      * Get borrowing requests
-     * 
+     *
      * Get a list of borrowing requests requested by current user
      *
-     * @queryParam status_id integer The id of the status. Example: 1 
+     * @queryParam status_id integer The id of the status. Example: 1
      * @queryParam sender_id integer The id of the sender. Example: 1
      * @queryParam handler_id integer The id of the handler. Example: 1
      * @queryParam is_revised boolean The status of the borrowing request. Example: true
@@ -40,7 +40,7 @@ class BorrowingRequestController extends Controller
      * @queryParam page_size integer The number of borrowing requests to display per page. Example: 15
      * @queryParam sort_by string The column to sort by. Example: purpose
      * @queryParam sort_direction string The direction to sort. Example: asc
-     * 
+     *
      * @subgroup Academic
      */
     public function indexAcademic(Request $request)
@@ -65,10 +65,10 @@ class BorrowingRequestController extends Controller
 
     /**
      * Get borrowing requests
-     * 
+     *
      * Get a list of borrowing requests
      *
-     * @queryParam status_id integer The id of the status. Example: 1 
+     * @queryParam status_id integer The id of the status. Example: 1
      * @queryParam sender_id integer The id of the sender. Example: 1
      * @queryParam handler_id integer The id of the handler. Example: 1
      * @queryParam is_revised boolean The status of the borrowing request. Example: true
@@ -79,7 +79,7 @@ class BorrowingRequestController extends Controller
      * @queryParam page_size integer The number of borrowing requests to display per page. Example: 15
      * @queryParam sort_by string The column to sort by. Example: purpose
      * @queryParam sort_direction string The direction to sort. Example: asc
-     * 
+     *
      * @subgroup Management
      */
     public function indexManagement(Request $request)
@@ -103,7 +103,7 @@ class BorrowingRequestController extends Controller
 
     /**
      * Get borrowing request details
-     * 
+     *
      * @urlParam borrowing_request required The ID of the borrowing request. Example: 1
      */
     public function show(BorrowingRequest $borrowingRequest)
@@ -125,12 +125,12 @@ class BorrowingRequestController extends Controller
 
     /**
      * Create a new borrowing request
-     * 
+     *
      * @bodyParam purpose string required The purpose of the borrowing request. Example: For research
      * @bodyParam start_date date required The start date of borrowing Example: 2021-01-01 08:00:00
      * @bodyParam end_date date required The return date of borrowing. Example: 2021-01-01 16:00:00
      * @bodyParam borrowed_items array required The items to be borrowed. Example: [{"item_id": 1, "quantity": 2}]
-     * 
+     *
      * @subgroup Academic
      */
     public function store(BorrowingRequestStoreRequest $request)
@@ -147,6 +147,7 @@ class BorrowingRequestController extends Controller
             'status_id' => 1, // 'Pending
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
+            'school_subject_id' => $validated['school_subject_id'] ?? null,
         ]);
 
         $borrowedItems = json_decode($validated['borrowed_items'], true);
@@ -167,13 +168,13 @@ class BorrowingRequestController extends Controller
 
     /**
      * Handle borrowing request
-     * 
+     *
      * Handle a borrowing request
-     * 
+     *
      * If the user is in Academic, can only send is_approved.
-     * 
+     *
      * @urlParam borrowing_request required The ID of the borrowing request. Example: 1
-     * 
+     *
      * @bodyParam status int required The status of the borrowing request (1: Approved, 2: Rejected, 3: Revised). Example: 1
      * @bodyParam start_date date The start date of borrowing Example: 2021-01-01 08:00:00
      * @bodyParam end_date date The return date of borrowing. Example: 2021-01-01 16:00:00

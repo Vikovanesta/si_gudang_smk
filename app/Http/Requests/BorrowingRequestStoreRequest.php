@@ -27,6 +27,7 @@ class BorrowingRequestStoreRequest extends FormRequest
             'start_date' => 'required|date_format:Y-m-d H:i:s|after_or_equal:today',
             'end_date' => 'required|date_format:Y-m-d H:i:s|after:start_date',
             'borrowed_items' => 'required|json',
+            'school_subject_id' => 'nullable|exists:school_subjects,id',
         ];
     }
 }
