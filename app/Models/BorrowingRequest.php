@@ -64,6 +64,18 @@ class BorrowingRequest extends Model
                 $q->where('end_date', '<=', $filters['end_date']);
             });
         })
+        ->when(isset($filters['q']), function ($q) use ($filters) {
+            $q->where(function ($q) use ($filters) {
+                $q->where('id', $filters['q'])
+                  ->orWhereHas('sender', function ($q) use ($filters) {
+                      $q->whereHas('student', function ($q) use ($filters) {
+                          $q->where('name', 'like', '%'.$filters['q'].'%');
+                      })->orWhereHas('teacher', function ($q) use ($filters) {
+                          $q->where('name', 'like', '%'.$filters['q'].'%');
+                      });
+                  });
+            });
+        })
         ->orderBy($filters['sort_by'] ?? 'created_at', $filters['sort_direction'] ?? 'DESC');
     }
 
