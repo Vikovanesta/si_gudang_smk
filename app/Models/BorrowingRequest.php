@@ -25,7 +25,14 @@ class BorrowingRequest extends Model
     {
         return $q->when(isset($filters['status_id']), function ($q) use ($filters) {
             $q->whereHas('details', function ($q) use ($filters) {
-                $q->where('status_id', $filters['status_id']);
+                $q->where('status_id', $filters['status_id'])
+                  ->where('id', function ($subQuery) {
+                      $subQuery->select('id')
+                               ->from('request_details')
+                               ->whereColumn('borrowing_requests.id', 'request_details.request_id')
+                               ->orderByDesc('id')
+                               ->limit(1);
+                  });
             });
         })
         ->when(isset($filters['sender_id']), function ($q) use ($filters) {
