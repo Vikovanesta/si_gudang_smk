@@ -23,6 +23,7 @@ class BorrowingRequestResource extends JsonResource
             'is_revised' => $this->is_revised,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'borrowed_items_count' => $sortedDetails->first()->borrowedItems->count(),
             'details' => BorrowingRequestDetailResource::collection($sortedDetails),
             'sender' => new UserResource($this->sender),
             'handler' => new UserResource($this->handler),

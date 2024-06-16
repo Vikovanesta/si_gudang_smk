@@ -3,10 +3,12 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowedItemController;
 use App\Http\Controllers\BorrowingRequestController;
+use App\Http\Controllers\BorrowingRequestStatusController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LaboranController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\WarehouseController;
@@ -27,6 +29,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['auth.opt'], 'prefix' => 'v1'], function(){
     Route::post('/register/students', [AuthController::class,'registerStudent'])->name('registerStudent');
     Route::post('/login', [AuthController::class,'login'])->name('auth');
+    Route::get('/classes', [SchoolClassController::class,'index'])->name('indexClasses');
+    Route::get('/borrowing-request-statuses', [BorrowingRequestStatusController::class,'index'])->name('indexBorrowingRequestStatuses');
     // Route::post('/register', [AuthController::class,'register'])->name('register');
 
     Route::get('/postman', function () {
