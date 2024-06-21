@@ -111,7 +111,8 @@ class BorrowingRequestController extends Controller
         Gate::authorize('view-borrowing-request', $borrowingRequest);
 
         $borrowingRequest->load([
-            'sender',
+            'sender.student.schoolClass',
+            'sender.teacher',
             'handler',
             'details.status',
             'details.borrowedItems.item',
@@ -140,6 +141,7 @@ class BorrowingRequestController extends Controller
         $borrowingRequest = BorrowingRequest::create([
             'sender_id' => Auth::id(),
             'purpose' => $validated['purpose'],
+            'school_subject_id' => $validated['school_subject_id'] ?? null,
         ]);
 
         $requestDetail = RequestDetail::create([
@@ -147,7 +149,6 @@ class BorrowingRequestController extends Controller
             'status_id' => 1, // 'Pending
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
-            'school_subject_id' => $validated['school_subject_id'] ?? null,
         ]);
 
         $borrowedItems = json_decode($validated['borrowed_items'], true);

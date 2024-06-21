@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::delete('/me/carts/{item}', [CartController::class,'destroy'])->name('destroyCart');
 
     Route::get('/borrowing-requests', [BorrowingRequestController::class,'indexManagement'])->name('indexManagementBorrowingRequests');
+    Route::get('/borrowing-requests/{borrowingRequest}', [BorrowingRequestController::class,'show'])->name('showBorrowingRequest');
     Route::post('/borrowing-requests', [BorrowingRequestController::class,'store'])->name('storeBorrowingRequest');
     Route::put('/borrowing-requests/{borrowingRequest}', [BorrowingRequestController::class,'handle'])->name('handleBorrowingRequest');
 
