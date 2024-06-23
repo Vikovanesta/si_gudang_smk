@@ -30,9 +30,9 @@ class AuthController extends Controller
 
     /**
      * Login
-     * 
+     *
      * Login to the application
-     * 
+     *
      * @bodyParam name string required The name of the user. Example: student
      * @bodyParam email string required The email of the user. Example: student@mail.com
      * @bodyParam password string required The password of the user. Example: password
@@ -62,9 +62,9 @@ class AuthController extends Controller
 
     /**
      * List Student Registration
-     * 
+     *
      * Get list of student registration
-     * 
+     *
      * @subgroup Management
      * @authenticated
      * */
@@ -74,16 +74,16 @@ class AuthController extends Controller
 
         $query = $request->query();
 
-        $studentRegistrations = StudentRegistration::paginate($query['page_size'] ?? 15);
+        $studentRegistrations = StudentRegistration::filterByQuery($query)->paginate($query['page_size'] ?? 15);
 
         return StudentRegistrationResource::collection($studentRegistrations);
     }
 
     /**
      * Register student
-     * 
+     *
      * Self registration for student
-     * 
+     *
      * @bodyParam class_id integer required The class id of the student. Example: 1
      * @bodyParam name string required The name of the student. Example: Abdul al-karim
      * @bodyParam email string required The email of the student. Example: abdull@mail.com
@@ -108,20 +108,20 @@ class AuthController extends Controller
         $studentRegistration = StudentRegistration::create($validated);
 
         return $this->success(
-            new StudentRegistrationResource($studentRegistration), 
-            'Registration has been sent. Please wait for confirmation', 
+            new StudentRegistrationResource($studentRegistration),
+            'Registration has been sent. Please wait for confirmation',
             201
         );
     }
 
     /**
      * Verify student registration
-     * 
+     *
      * Verify student registration
-     * 
+     *
      * @urlParam id integer required The id of the student registration. Example: 1
      * @bodyParam verify boolean required The verification status. Example: true
-     * 
+     *
      * @subgroup Management
      * @authenticated
      * */
@@ -143,14 +143,14 @@ class AuthController extends Controller
             );
         }
 
-        if($request['verify']) {
+        if($request['verify'] == true) {
             $newUser = User::create([
                 'email' => $studentRegistration->email,
                 'password' => $studentRegistration->password,
                 'phone' => $studentRegistration->phone,
                 'role_id' => 2
             ]);
-            
+
             $student = Student::create([
                 'class_id' => $studentRegistration->class_id,
                 'name' => $studentRegistration->name,
@@ -167,8 +167,8 @@ class AuthController extends Controller
             ]);
 
             return $this->success(
-                new UserResource($newUser), 
-                'Student has been succesfully registered', 
+                new UserResource($newUser),
+                'Student has been succesfully registered',
                 201
             );
         }
@@ -182,8 +182,8 @@ class AuthController extends Controller
             ]);
 
             return $this->success(
-                new StudentRegistrationResource($studentRegistration), 
-                'Registration has been rejected', 
+                new StudentRegistrationResource($studentRegistration),
+                'Registration has been rejected',
                 200
             );
         }
@@ -191,9 +191,9 @@ class AuthController extends Controller
 
     /**
      * Get my data
-     * 
+     *
      * Get current logged in user data
-     * 
+     *
      * @authenticated
      * */
     public function me()
@@ -203,11 +203,11 @@ class AuthController extends Controller
 
     /**
      * Logout
-     * 
+     *
      * Logout from the application
-     * 
+     *
      * @authenticated
-     * 
+     *
      * @response 200 {
      * "message": "Logged out"
      * }

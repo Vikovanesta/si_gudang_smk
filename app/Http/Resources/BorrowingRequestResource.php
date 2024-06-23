@@ -15,11 +15,15 @@ class BorrowingRequestResource extends JsonResource
     public function toArray(Request $request): array
     {
         $sortedDetails = $this->details->sortByDesc('id');
+        $status = $sortedDetails->first()->status->name ?? 'pending';
+        if ($status === 'pending' && $this->is_revised) {
+            $status = 'revised';
+        }
 
         return [
             'id' => $this->id,
             'purpose' => $this->purpose,
-            'status' => $sortedDetails->first()->status->name ?? 'pending',
+            'status' => $status,
             'is_revised' => $this->is_revised,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

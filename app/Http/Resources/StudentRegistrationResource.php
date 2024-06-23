@@ -14,6 +14,15 @@ class StudentRegistrationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $status = '-';
+        if ($this->is_verified === 1 && $this->verified_at) {
+            $status = 'Approved';
+        } else if ($this->is_verified === 0 && $this->verified_at) {
+            $status = 'Rejected';
+        } else{
+            $status = 'Pending';
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -24,6 +33,7 @@ class StudentRegistrationResource extends JsonResource
             'date_of_birth' => $this->date_of_birth,
             'is_verified' => $this->is_verified,
             'verified_at' => $this->verified_at,
+            'status' => $status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'class' => new ClassResource($this->schoolClass),
