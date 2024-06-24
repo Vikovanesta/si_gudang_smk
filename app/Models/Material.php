@@ -22,7 +22,7 @@ class Material extends Model
         ->when(isset($filters['name']), function ($q) use ($filters) {
             $q->where('name', 'like', '%'.$filters['name'].'%');
         })
-        ->orderBy($filters['sort_by'] ?? 'id', $filters['sort_direction'] ?? 'ASC');
+        ->orderBy($filters['sort_by'] ?? 'name', $filters['sort_direction'] ?? 'ASC');
     }
 
     public function category()

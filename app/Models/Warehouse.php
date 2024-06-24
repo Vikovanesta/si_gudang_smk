@@ -23,7 +23,7 @@ class Warehouse extends Model
                 $query->where('id', $filters['item_id']);
             });
         })
-        ->orderBy($filters['sort_by'] ?? 'id', $filters['sort_direction'] ?? 'ASC');
+        ->orderBy($filters['sort_by'] ?? 'name', $filters['sort_direction'] ?? 'ASC');
     }
 
     public function items()
