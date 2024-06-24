@@ -14,12 +14,12 @@ class SchoolClassSeeder extends Seeder
     public function run(): void
     {
         $classes = [
-            'X RPL 1',
-            'X RPL 2',
-            'XI RPL 1',
-            'XI RPL 2',
-            'XII RPL 1',
-            'XII RPL 2',
+            'X Teknik Komputer dan Jaringan',
+            'X Teknik Otomotif',
+            'XI Teknik Elektronika',
+            'XI Teknik Konstruksi',
+            'XII Multimedia',
+            'XII Teknik Kimia Industri',
         ];
 
         foreach ($classes as $class) {

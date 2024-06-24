@@ -42,6 +42,18 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'phone' => '081234567893',
             ],
+            [
+                'role_id' => 2,
+                'email' => 'usman@mail.com',
+                'password' => Hash::make('password'),
+                'phone' => '081234567894',
+            ],
+            [
+                'role_id' => 3,
+                'email' => 'khalid@mail.com',
+                'password' => Hash::make('password'),
+                'phone' => '081234567895',
+            ]
         ];
 
         foreach ($users as $user) {
@@ -51,22 +63,37 @@ class UserSeeder extends Seeder
         Student::create([
             'user_id' => 2,
             'class_id' => 1,
-            'name' => 'Budi',
+            'name' => 'Ismail Ahmad Kanabawi',
             'nisn' => '1234567890',
             'year_in' => '2021',
             'date_of_birth' => '2000-01-01',
         ]);
-        
+
         Teacher::create([
             'user_id' => 3,
-            'name' => 'Susi',
+            'name' => 'Susi Susanti',
             'nip' => '1234567890',
         ])->subjects()->attach([1, 2]);
 
         Laboran::create([
             'user_id' => 4,
-            'name' => 'Joko',
+            'name' => 'Khidr Karawita',
             'nip' => '1234567899',
         ]);
+
+        Student::create([
+            'user_id' => 5,
+            'class_id' => 6,
+            'name' => 'Usman Abdul Jalil Sisha',
+            'nisn' => '1234567891',
+            'year_in' => '2021',
+            'date_of_birth' => '2000-01-01',
+        ]);
+
+        Teacher::create([
+            'user_id' => 6,
+            'name' => 'Khalid Kashmiri',
+            'nip' => '1234567891',
+        ])->subjects()->attach([3, 4, 5]);
     }
 }

@@ -16,10 +16,13 @@ class SchoolSubjectSeeder extends Seeder
         $subjects = [
             'Pemrograman Dasar',
             'Pemrograman Berorientasi Objek',
-            'Pemrograman Web',
-            'Pemrograman Mobile',
-            'Pemrograman Desktop',
-            'Pemrograman Game',
+            'Kimia Dasar',
+            'Fisika Dasar',
+            'Biologi Dasar',
+            'Teknik Pengolahan Citra',
+            'Teknik Pengolahan Audio',
+            'Teknik Pengukuran dan Instrumentasi',
+            'Manajemen Proyek',
         ];
 
         foreach ($subjects as $subject) {

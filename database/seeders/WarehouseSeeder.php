@@ -15,13 +15,19 @@ class WarehouseSeeder extends Seeder
     {
         $warehouses = [
             [
-                'name' => 'Gudang A',
+                'name' => 'Gudang EC-101',
             ],
             [
-                'name' => 'Gudang B',
+                'name' => 'Gudang MD-203',
             ],
             [
-                'name' => 'Gudang C',
+                'name' => 'Gudang OT-208',
+            ],
+            [
+                'name' => 'Gudang PT-110',
+            ],
+            [
+                'name' => 'Gudang KM-103',
             ],
         ];
 

@@ -14,13 +14,14 @@ class ItemCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Electronics',
-            'Furniture',
-            'Stationery',
-            'Clothing',
-            'Tools',
-            'Sporting Goods',
-            'Automotive',
+            'Elektronik',
+            'Mekanik',
+            'Pertukangan',
+            'Komputer',
+            'Otomotif',
+            'Jaringan',
+            'laboratorium',
+            'Multimedia',
         ];
 
         foreach ($categories as $category) {

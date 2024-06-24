@@ -16,43 +16,35 @@ class MaterialSeeder extends Seeder
         $materials = [
             [
                 'material_category_id' => 1,
-                'name' => 'Bahan Kimia A',
+                'name' => 'Material A',
             ],
             [
                 'material_category_id' => 1,
-                'name' => 'Bahan Kimia B',
+                'name' => 'Material B',
             ],
             [
                 'material_category_id' => 2,
-                'name' => 'Bahan Logam A',
+                'name' => 'Material C',
             ],
             [
                 'material_category_id' => 2,
-                'name' => 'Bahan Logam B',
+                'name' => 'Material D',
             ],
             [
                 'material_category_id' => 3,
-                'name' => 'Bahan Plastik A',
+                'name' => 'Material E',
             ],
             [
                 'material_category_id' => 3,
-                'name' => 'Bahan Plastik B',
+                'name' => 'Material F',
             ],
             [
                 'material_category_id' => 4,
-                'name' => 'Bahan Kain A',
+                'name' => 'Material G',
             ],
             [
                 'material_category_id' => 4,
-                'name' => 'Bahan Kain B',
-            ],
-            [
-                'material_category_id' => 5,
-                'name' => 'Bahan Kayu A',
-            ],
-            [
-                'material_category_id' => 5,
-                'name' => 'Bahan Kayu B',
+                'name' => 'Material H',
             ],
         ];
 
