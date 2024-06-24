@@ -25,8 +25,9 @@ class ItemStoreRequest extends FormRequest
         return [
             'warehouse_id' => 'required|exists:warehouses,id',
             'material_id' => 'required|exists:materials,id',
+            'category_id' => 'required|exists:item_categories,id',
             'name' => 'required|string',
-            'max_stock' => 'required|integer',
+            'max_stock' => 'required|integer|min:1',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }

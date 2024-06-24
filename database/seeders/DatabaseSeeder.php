@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Borrowing;
-use App\Models\Item;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
 
             MaterialCategorySeeder::class,
+            ItemCategorySeeder::class,
             WarehouseSeeder::class,
             MaterialSeeder::class,
             ItemSeeder::class,

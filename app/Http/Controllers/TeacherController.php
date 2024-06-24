@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * @group Teacher
- * 
+ *
  * APIs for managing teachers
- * 
+ *
  * @authenticated
  */
 class TeacherController extends Controller
@@ -27,9 +27,9 @@ class TeacherController extends Controller
 
     /**
      * Get teachers
-     * 
+     *
      * Get a list of teachers
-     * 
+     *
      * @queryParam name string The name of the teacher. Example: teacher
      * @queryParam nip string The nip of the teacher. Example: 123456789
      * @queryParam subject_id integer The id of the subject. Example: 1
@@ -49,7 +49,7 @@ class TeacherController extends Controller
 
     /**
      * Get teacher details
-     * 
+     *
      * @urlParam teacher required The ID of the teacher. Example: 1
      */
     public function show(Teacher $teacher)
@@ -64,14 +64,14 @@ class TeacherController extends Controller
 
     /**
      * Create a new teacher
-     * 
+     *
      * @bodyParam name string required The name of the teacher. Example: teacher
      * @bodyParam email string required The email of the teacher. Example: teacher@mail.com
      * @bodyParam password string required The password of the teacher. Example: teacher
      * @bodyParam phone string required The phone of the teacher. Example: 081234567890
      * @bodyParam nip string required The nip of the teacher. Example: 123456789
      * @bodyParam profile_image file required The profile image of the teacher.
-     * 
+     *
      * @subgroup Management
      */
     public function store(TeacherStoreRequest $request)
@@ -95,7 +95,7 @@ class TeacherController extends Controller
 
             if (isset($validated['profile_image'])) {
                 $image = $validated['profile_image'];
-                $directory = 'teachers/images';
+                $directory = 'teachers/images/';
                 $image->storeAs('public/' . $directory, $image->hashName(), 'local');
                 $image_url = url('/storage/' . $directory . $image->hashName());
 
@@ -110,16 +110,16 @@ class TeacherController extends Controller
 
     /**
      * Update teacher
-     * 
+     *
      * @urlParam teacher required The ID of the teacher. Example: 1
-     * 
+     *
      * @bodyParam name string The name of the teacher. Example: teacher
      * @bodyParam email string The email of the teacher. Example: teacher@mail.com
      * @bodyParam phone string The phone of the teacher. Example: 081234567890
      * @bodyParam nip string The nip of the teacher. Example: 123456789
      * @bodyParam date_of_birth date The date of birth of the teacher. Example: 2000-01-01
      * @bodyParam profile_image file The profile image of the teacher.
-     * 
+     *
      * @subgroup Management
      */
     public function update(TeacherUpdateRequest $request, Teacher $teacher)
@@ -140,7 +140,7 @@ class TeacherController extends Controller
 
             if (isset($validated['profile_image'])) {
                 $image = $validated['profile_image'];
-                $directory = 'teachers/images';
+                $directory = 'teachers/images/';
                 $image->storeAs('public/' . $directory, $image->hashName(), 'local');
                 $image_url = url('/storage/' . $directory . $image->hashName());
 
@@ -155,9 +155,9 @@ class TeacherController extends Controller
 
     /**
      * Delete teacher
-     * 
+     *
      * @urlParam teacher required The ID of the teacher. Example: 1
-     * 
+     *
      * @subgroup Management
      */
     public function destroy(Teacher $teacher)

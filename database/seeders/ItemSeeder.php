@@ -17,6 +17,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 1,
                 'material_id' => 1,
+                'category_id' => 1,
                 'name' => 'Item A',
                 'stock' => 16,
                 'max_stock' => 30,
@@ -24,6 +25,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 1,
                 'material_id' => 2,
+                'category_id' => 2,
                 'name' => 'Item BB',
                 'stock' => 22,
                 'max_stock' => 25,
@@ -31,6 +33,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 2,
                 'material_id' => 3,
+                'category_id' => 2,
                 'name' => 'Item CCC',
                 'stock' => 14,
                 'max_stock' => 27,
@@ -38,6 +41,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 2,
                 'material_id' => 4,
+                'category_id' => 1,
                 'name' => 'Item AB',
                 'stock' => 60,
                 'max_stock' => 80,
@@ -45,6 +49,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 3,
                 'material_id' => 5,
+                'category_id' => 3,
                 'name' => 'Item B',
                 'stock' => 56,
                 'max_stock' => 94,
@@ -52,6 +57,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 3,
                 'material_id' => 6,
+                'category_id' => 2,
                 'name' => 'Item AA',
                 'stock' => 45,
                 'max_stock' => 60,
@@ -59,6 +65,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 1,
                 'material_id' => 7,
+                'category_id' => 4,
                 'name' => 'Item C',
                 'stock' => 92,
                 'max_stock' => 100,
@@ -66,6 +73,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 1,
                 'material_id' => 8,
+                'category_id' => 1,
                 'name' => 'item D',
                 'stock' => 88,
                 'max_stock' => 100,
@@ -73,6 +81,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 2,
                 'material_id' => 9,
+                'category_id' => 2,
                 'name' => 'Item KA',
                 'stock' => 10,
                 'max_stock' => 15,
@@ -80,6 +89,7 @@ class ItemSeeder extends Seeder
             [
                 'warehouse_id' => 2,
                 'material_id' => 10,
+                'category_id' => 3,
                 'name' => 'Item KAA',
                 'stock' => 34,
                 'max_stock' => 47,

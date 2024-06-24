@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * @group Student
- * 
+ *
  * APIs for managing students
- * 
+ *
  * @authenticated
  */
 class StudentController extends Controller
@@ -27,9 +27,9 @@ class StudentController extends Controller
 
     /**
      * Get students
-     * 
+     *
      * Get a list of students
-     * 
+     *
      * @queryParam class_id integer The id of the class. Example: 1
      * @queryParam name string The name of the student. Example: student
      * @queryParam nisn string The nisn of the student. Example: 123456789
@@ -44,17 +44,17 @@ class StudentController extends Controller
      */
     public function index()
     {
-        
+
         $query = request()->query();
-        
+
         $students = Student::filterByQuery($query)->paginate($query['page_size'] ?? 15);
-        
+
         return StudentResource::collection($students);
     }
 
     /**
      * Get student details
-     * 
+     *
      * @urlParam student required The ID of the student. Example: 1
      */
     public function show(Student $student)
@@ -69,9 +69,9 @@ class StudentController extends Controller
 
     /**
      * Add student
-     * 
+     *
      * Add a new student
-     * 
+     *
      * @bodyParam class_id integer required The id of the class. Example: 1
      * @bodyParam name string required The name of the student. Example: student
      * @bodyParam nisn string required The nisn of the student. Example: 123456789
@@ -81,7 +81,7 @@ class StudentController extends Controller
      * @bodyParam password string required The password of the student. Example: password
      * @bodyParam phone string required The phone of the student. Example: 081234567890
      * @bodyParam profile_image file The profile image of the student.
-     * 
+     *
      * @subgroup Management
      */
     public function store(StudentStoreRequest $request)
@@ -115,7 +115,7 @@ class StudentController extends Controller
 
             if (isset($validated['profile_image'])) {
                 $profileImage = $validated['profile_image'];
-                $directory = 'students/images';
+                $directory = 'students/images/';
                 $profileImage->storeAs('public/' . $directory, $profileImage->hashName(), 'local');
                 $profileImageUrl = url('/storage/' . $directory . $profileImage->hashName());
 
@@ -130,9 +130,9 @@ class StudentController extends Controller
 
     /**
      * Update student
-     * 
+     *
      * @urlParam student required The ID of the student. Example: 1
-     * 
+     *
      * @bodyParam class_id integer The id of the class. Example: 1
      * @bodyParam name string The name of the student. Example: student
      * @bodyParam email string The email of the student. Example: student@mail.com
@@ -141,7 +141,7 @@ class StudentController extends Controller
      * @bodyParam year_in date The year in of the student. Example: 2020
      * @bodyParam date_of_birth date The date of birth of the student. Example: 2000-01-01
      * @bodyParam profile_image file The profile image of the student.
-     * 
+     *
      * @subgroup Management
      */
     public function update(StudentUpdateRequest $request, Student $student)
@@ -161,11 +161,11 @@ class StudentController extends Controller
             $user->update([
                 'email' => $validated['email'] ?? $user->email,
                 'phone' => $validated['phone'] ?? $user->phone,
-            ]); 
+            ]);
 
             if (isset($validated['profile_image'])) {
                 $image = $validated['profile_image'];
-                $directory = 'students/images';
+                $directory = 'students/images/';
                 $image->storeAs('public/' . $directory, $image->hashName(), 'local');
                 $profileImageUrl = url('/storage/' . $directory . $image->hashName());
 
@@ -180,9 +180,9 @@ class StudentController extends Controller
 
     /**
      * Delete student
-     * 
+     *
      * @urlParam student required The ID of the student. Example: 1
-     * 
+     *
      * @subgroup Management
      */
     public function destroy(Student $student)

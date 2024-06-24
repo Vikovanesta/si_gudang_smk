@@ -25,6 +25,7 @@ class ItemUpdateRequest extends FormRequest
         return [
             'warehouse_id' => 'nullable|exists:warehouses,id',
             'material_id' => 'nullable|exists:materials,id',
+            'category_id' => 'nullable|exists:item_categories,id',
             'name' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ];

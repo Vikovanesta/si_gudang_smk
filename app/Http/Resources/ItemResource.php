@@ -32,6 +32,7 @@ class ItemResource extends JsonResource
             'max_stock' => $this->max_stock,
             'image_url' => $this->image,
             'is_in_cart' => $is_in_cart($this),
+            'category' => new ItemCategoryResource($this->category),
             'material' => new MaterialResource($this->material),
             'warehouse' => new WarehouseResource($this->warehouse),
         ];

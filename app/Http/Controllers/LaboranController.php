@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * @group Laboran
- * 
+ *
  * APIs for managing laborans
- * 
+ *
  * @authenticated
  */
 class LaboranController extends Controller
@@ -27,9 +27,9 @@ class LaboranController extends Controller
 
     /**
      * Get laborans
-     * 
+     *
      * Get a list of laborans
-     * 
+     *
      * @queryParam name string The name of the laboran. Example: laboran
      * @queryParam nip string The nip of the laboran. Example: 123456789
      * @queryParam min_date_of_birth date The minimum date of birth of the laboran. Example: 2000-01-01
@@ -51,7 +51,7 @@ class LaboranController extends Controller
 
     /**
      * Get laboran details
-     * 
+     *
      * @urlParam laboran required The ID of the laboran. Example: 1
      */
     public function show(Laboran $laboran)
@@ -65,9 +65,9 @@ class LaboranController extends Controller
 
     /**
      * Add laboran
-     * 
+     *
      * Add a new laboran
-     * 
+     *
      * @bodyParam name string required The name of the laboran. Example: laboran
      * @bodyParam email string required The email of the laboran. Example: laboran@mail.com
      * @bodyParam password string required The password of the laboran. Example: password
@@ -75,7 +75,7 @@ class LaboranController extends Controller
      * @bodyParam nip string required The nip of the laboran. Example: 123456789
      * @bodyParam date_of_birth date The date of birth of the laboran. Example: 2000-01-01
      * @bodyParam profile_image file The profile image of the laboran.
-     * 
+     *
      * @subgroup Management
      */
     public function store(LaboranStoreRequest $request)
@@ -98,7 +98,7 @@ class LaboranController extends Controller
 
             if (isset($validated['profile_image'])) {
                 $image = $validated['profile_image'];
-                $directory = 'laborans/images';
+                $directory = 'laborans/images/';
                 $image->storeAs('public/' . $directory, $image->hashName(), 'local');
                 $imageUrl = url('/storage/' . $directory . $image->hashName());
 
@@ -115,16 +115,16 @@ class LaboranController extends Controller
 
     /**
      * Update laboran
-     * 
+     *
      * @urlParam laboran required The ID of the laboran. Example: 1
-     * 
+     *
      * @bodyParam name string The name of the laboran. Example: laboran
      * @bodyParam email string The email of the laboran. Example: laboran@mail.com
      * @bodyParam phone string The phone of the laboran. Example: 081234567890
      * @bodyParam nip string The nip of the laboran. Example: 123456789
      * @bodyParam date_of_birth date The date of birth of the laboran. Example: 2000-01-01
      * @bodyParam profile_image file The profile image of the laboran.
-     * 
+     *
      * @subgroup Management
      */
     public function update(LaboranUpdateRequest $request, Laboran $laboran)
@@ -145,7 +145,7 @@ class LaboranController extends Controller
 
             if (isset($validated['profile_image'])) {
                 $image = $validated['profile_image'];
-                $directory = 'laborans/images';
+                $directory = 'laborans/images/';
                 $image->storeAs('public/' . $directory, $image->hashName(), 'local');
                 $imageUrl = url('/storage/' . $directory . $image->hashName());
 
@@ -162,9 +162,9 @@ class LaboranController extends Controller
 
     /**
      * Delete laboran
-     * 
+     *
      * @urlParam laboran required The ID of the laboran. Example: 1
-     * 
+     *
      * @subgroup Management
      */
     public function destroy(Laboran $laboran)

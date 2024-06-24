@@ -13,6 +13,7 @@ class Item extends Model
     protected $fillable = [
         'warehouse_id',
         'material_id',
+        'category_id',
         'name',
         'stock',
         'max_stock',
@@ -39,6 +40,22 @@ class Item extends Model
         ->when(isset($filters['max_stock']), function ($q) use ($filters) {
             $q->where('max_stock', $filters['max_stock']);
         })
+        ->when(isset($filters['q']), function ($q) use ($filters) {
+            $q->where(function ($q) use ($filters) {
+                $q->where('id', $filters['q'])
+                  ->orWhere('name', 'like', '%'.$filters['q'].'%')
+                  ->orWhere('stock', 'like', '%'.$filters['q'].'%')
+                  ->orWhereHas('warehouse', function ($q) use ($filters) {
+                      $q->where('name', 'like', '%'.$filters['q'].'%');
+                  })
+                  ->orWhereHas('material', function ($q) use ($filters) {
+                      $q->where('name', 'like', '%'.$filters['q'].'%');
+                  })
+                  ->orWhereHas('category', function ($q) use ($filters) {
+                      $q->where('name', 'like', '%'.$filters['q'].'%');
+                  });
+            });
+        })
         ->orderBy($filters['sort_by'] ?? 'created_at', $filters['sort_direction'] ?? 'DESC');
     }
 
@@ -55,5 +72,10 @@ class Item extends Model
     public function borrowedItems()
     {
         return $this->hasMany(BorrowedItem::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ItemCategory::class);
     }
 }
