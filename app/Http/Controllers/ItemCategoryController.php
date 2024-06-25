@@ -15,7 +15,9 @@ class ItemCategoryController extends Controller
 
     public function index(Request $request)
     {
-        $categories = ItemCategory::all()->sortBy('name');
+        $query = $request->query();
+
+        $categories = ItemCategory::filterByQuery($query)->paginate($query['page_size'] ?? 15);
         return ItemCategoryResource::collection($categories);
     }
 
