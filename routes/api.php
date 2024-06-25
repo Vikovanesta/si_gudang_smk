@@ -33,11 +33,6 @@ Route::group(['middleware' => ['auth.opt'], 'prefix' => 'v1'], function(){
     Route::get('/classes', [SchoolClassController::class,'index'])->name('indexClasses');
     Route::get('/borrowing-request-statuses', [BorrowingRequestStatusController::class,'index'])->name('indexBorrowingRequestStatuses');
 
-    Route::get('/items/categories', [ItemCategoryController::class,'index'])->name('indexItemCategories');
-    Route::post('/items/categories', [ItemCategoryController::class,'store'])->name('storeItemCategory');
-    Route::put('/items/categories/{itemCategory}', [ItemCategoryController::class,'update'])->name('updateItemCategory');
-    Route::delete('/items/categories/{itemCategory}', [ItemCategoryController::class,'destroy'])->name('destroyItemCategory');
-
     // Route::post('/register', [AuthController::class,'register'])->name('register');
 
     Route::get('/postman', function () {
@@ -91,6 +86,11 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::post('/items', [ItemController::class,'store'])->name('storeItem');
     Route::put('/items/{item}', [ItemController::class,'update'])->name('updateItem');
     Route::delete('/items/{item}', [ItemController::class,'delete'])->name('deleteItem');
+
+    Route::get('/items/categories', [ItemCategoryController::class,'index'])->name('indexItemCategories');
+    Route::post('/items/categories', [ItemCategoryController::class,'store'])->name('storeItemCategory');
+    Route::put('/items/categories/{itemCategory}', [ItemCategoryController::class,'update'])->name('updateItemCategory');
+    Route::delete('/items/categories/{itemCategory}', [ItemCategoryController::class,'destroy'])->name('destroyItemCategory');
 
     Route::get('/warehouses', [WarehouseController::class,'index'])->name('indexWarehouses');
     Route::post('/warehouses', [WarehouseController::class,'store'])->name('storeWarehouse');
