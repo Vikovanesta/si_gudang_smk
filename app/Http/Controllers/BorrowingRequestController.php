@@ -7,6 +7,7 @@ use App\Http\Resources\BorrowingRequestResource;
 use App\Models\BorrowedItem;
 use App\Models\Borrowing;
 use App\Models\BorrowingRequest;
+use App\Models\Item;
 use App\Models\RequestDetail;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -153,6 +154,25 @@ class BorrowingRequestController extends Controller
 
         $borrowedItems = json_decode($validated['borrowed_items'], true);
         foreach ($borrowedItems as $borrowedItem) {
+
+            $item = Item::findOrFail($borrowedItem['item_id']);
+
+            if ($borrowedItem['quantity'] > $item->stock) {
+                return $this->error(
+                    null,
+                    'The quantity of ' . $item->name . ' is not enough',
+                    400
+                );
+            }
+
+            if ($borrowedItem['quantity'] <= 0) {
+                return $this->error(
+                    null,
+                    'The quantity of ' . $item->name . ' must be greater than 0',
+                    400
+                );
+            }
+
             BorrowedItem::create([
                 'request_detail_id' => $requestDetail->id,
                 'item_id' => $borrowedItem['item_id'],
