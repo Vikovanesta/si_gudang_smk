@@ -10,6 +10,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LaboranController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\SchoolClassController;
+use App\Http\Controllers\SchoolSubjectController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\WarehouseController;
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['auth.opt'], 'prefix' => 'v1'], function(){
     Route::post('/login', [AuthController::class,'login'])->name('auth');
     Route::get('/classes', [SchoolClassController::class,'index'])->name('indexClasses');
     Route::get('/borrowing-request-statuses', [BorrowingRequestStatusController::class,'index'])->name('indexBorrowingRequestStatuses');
+    Route::get('/subjects', [SchoolSubjectController::class,'index'])->name('indexSubjects');
 
     // Route::post('/register', [AuthController::class,'register'])->name('register');
 

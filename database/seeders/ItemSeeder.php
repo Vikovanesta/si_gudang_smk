@@ -119,14 +119,6 @@ class ItemSeeder extends Seeder
                 'max_stock' => 124,
             ],
             [
-                'warehouse_id' => 3,
-                'material_id' => 6,
-                'category_id' => 6,
-                'name' => 'Konektor RJ45',
-                'stock' => 98,
-                'max_stock' => 124,
-            ],
-            [
                 'warehouse_id' => 4,
                 'material_id' => 1,
                 'category_id' => 7,
