@@ -153,6 +153,15 @@ class BorrowingRequestController extends Controller
         ]);
 
         $borrowedItems = json_decode($validated['borrowed_items'], true);
+
+        if (empty($borrowedItems)) {
+            return $this->error(
+                null,
+                'The borrowed items must not be empty',
+                400
+            );
+        }
+
         foreach ($borrowedItems as $borrowedItem) {
 
             $item = Item::findOrFail($borrowedItem['item_id']);
