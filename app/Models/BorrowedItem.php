@@ -67,8 +67,12 @@ class BorrowedItem extends Model
                     $q->where('name', 'like', '%' . $filters['q'] . '%');
                 });
             })
-            ->orWhereHas('requestDetail.request.sender', function ($q) use ($filters) {
-                $q->where('name', 'like', '%' . $filters['q'] . '%');
+            ->orWhereHas('requestDetail', function ($q) use ($filters) {
+                $q->whereHas('request', function ($q) use ($filters) {
+                    $q->whereHas('sender', function ($q) use ($filters) {
+                        $q->where('name', 'like', '%' . $filters['q'] . '%');
+                    });
+                });
             })
             ->orWhere('quantity', 'like', '%' . $filters['q'] . '%')
             ->orWhere('id', 'like', '%' . $filters['q'] . '%');
