@@ -12,6 +12,7 @@ class BorrowedItem extends Model
     protected $fillable = [
         'item_id',
         'request_detail_id',
+        'status_id',
         'quantity',
         'returned_quantity',
         'borrowed_at',
