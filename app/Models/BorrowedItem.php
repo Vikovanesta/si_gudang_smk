@@ -60,6 +60,19 @@ class BorrowedItem extends Model
         ->when(isset($filters['request_status']), function ($q) use ($filters) {
             $q->ofRequestStatus($filters['request_status']);
         })
+        ->when(isset($filters['q']), function ($q) use ($filters) {
+            $q->whereHas('item', function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['q'] . '%')
+                ->orWhereHas('warehouse', function ($q) use ($filters) {
+                    $q->where('name', 'like', '%' . $filters['q'] . '%');
+                });
+            })
+            ->orWhereHas('requestDetail.request.sender', function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['q'] . '%');
+            })
+            ->orWhere('quantity', 'like', '%' . $filters['q'] . '%')
+            ->orWhere('id', 'like', '%' . $filters['q'] . '%');
+        })
         ->orderBy($filters['sort_by'] ?? 'created_at', $filters['sort_direction'] ?? 'DESC');
     }
 
