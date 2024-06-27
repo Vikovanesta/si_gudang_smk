@@ -82,6 +82,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::put('/borrowing-requests/{borrowingRequest}', [BorrowingRequestController::class,'handle'])->name('handleBorrowingRequest');
 
     Route::get('/borrowed-items', [BorrowedItemController::class,'indexManagement'])->name('indexManagementBorrowedItems');
+    Route::get('/borrowed-items/{borrowedItem}', [BorrowedItemController::class,'show'])->name('showBorrowedItem');
     Route::put('/borrowed-items/{borrowedItem}', [BorrowedItemController::class,'update'])->name('updateBorrowedItem');
 
     Route::get('/items', [ItemController::class,'index'])->name('indexItems');
