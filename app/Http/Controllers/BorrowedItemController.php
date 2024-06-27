@@ -138,10 +138,6 @@ class BorrowedItemController extends Controller
 
         DB::transaction(function () use ($borrowedItem, $validated) {
 
-            if (isset($validated['is_cancelled']) && $validated['is_cancelled']) {
-                $borrowedItem->item->increment('quantity', $borrowedItem->quantity - $borrowedItem->returned_quantity);
-            }
-
             $borrowedItem->update(
                 [
                     'returned_quantity' => $borrowedItem->returned_quantity + ($validated['returned_quantity'] ?? 0),
@@ -158,7 +154,7 @@ class BorrowedItemController extends Controller
             }
 
             if (isset($validated['is_cancelled']) && $validated['is_cancelled']) {
-                $borrowedItem->item->increment('quantity', $borrowedItem->quantity - $borrowedItem->returned_quantity);
+                $borrowedItem->item->increment('stock', $borrowedItem->quantity - $borrowedItem->returned_quantity);
             }
 
             if (isset($validated['is_borrowed']) && $validated['is_borrowed']) {
