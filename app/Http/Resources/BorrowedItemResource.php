@@ -29,7 +29,7 @@ class BorrowedItemResource extends JsonResource
                 'is_cancelled' => $this->is_cancelled,
                 'status' => new BorrowingStatusResource($this->status),
                 'item' => new ItemResource($this->item),
-                'subject' => new SubjectResource($this->requestDetail->request->subject),
+                'subject' => new SubjectResource($this->requestDetail->request->schoolSubject),
                 'borrower' => new UserResource($this->requestDetail->request->sender),
             ];
         }
