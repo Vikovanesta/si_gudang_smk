@@ -137,6 +137,11 @@ class BorrowedItemController extends Controller
         $validated = $request->validated();
 
         DB::transaction(function () use ($borrowedItem, $validated) {
+
+            if (isset($validated['is_cancelled']) && $validated['is_cancelled']) {
+                $borrowedItem->item->increment('quantity', $borrowedItem->quantity - $borrowedItem->returned_quantity);
+            }
+
             $borrowedItem->update(
                 [
                     'returned_quantity' => $borrowedItem->returned_quantity + ($validated['returned_quantity'] ?? 0),

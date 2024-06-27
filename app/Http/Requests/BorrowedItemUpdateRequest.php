@@ -24,8 +24,8 @@ class BorrowedItemUpdateRequest extends FormRequest
     {
         return [
             'returned_quantity' => 'nullable|integer|min:0|max:' . ($this->borrowedItem->quantity - $this->borrowedItem->returned_quantity),
-            'is_cancelled' => 'nullable|boolean|missing_with:is_borrowed',
-            'is_borrowed' => 'nullable|boolean|missing_with:is_cancelled,borrowed_at',
+            'is_cancelled' => 'nullable|boolean|missing_with:is_borrowed, borrowed_at, returned_at',
+            'is_borrowed' => 'nullable|boolean|missing_with:is_cancelled,borrowed_at, returned_at',
             'borrowed_at' => 'nullable|date_format:Y-m-d H:i:s',
             'returned_at' => 'nullable|date_format:Y-m-d H:i:s|after:borrowed_at',
         ];

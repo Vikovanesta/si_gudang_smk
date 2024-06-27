@@ -261,6 +261,11 @@ class BorrowingRequestController extends Controller
             $borrowingRequest->details->last()->update([
                 'status_id' => 2, // 'Approved'
             ]);
+
+            foreach ($borrowingRequest->details->last()->borrowedItems as $borrowedItem) {
+                $borrowedItem->item->decrement('stock', $borrowedItem->quantity);
+                $borrowedItem->status_id = 1; // 'Pending'
+            }
         }
         elseif ($validated['status'] == 2) {
             $borrowingRequest->details->last()->update([
@@ -310,9 +315,21 @@ class BorrowingRequestController extends Controller
             'is_approved' => 'required|boolean',
         ]);
 
-        $borrowingRequest->details->last()->update([
-            'status_id' => $validated['is_approved'] ? 2 : 3, // 2: Approved, 3: Rejected
-        ]);
+        if ($validated['is_approved']) {
+            $borrowingRequest->details->last()->update([
+                'status_id' => 2, // 'Approved'
+            ]);
+
+            foreach ($borrowingRequest->details->last()->borrowedItems as $borrowedItem) {
+                $borrowedItem->item->decrement('stock', $borrowedItem->quantity);
+                $borrowedItem->status_id = 1; // 'Pending'
+            }
+        }
+        else {
+            $borrowingRequest->details->last()->update([
+                'status_id' => 3, // 'Rejected'
+            ]);
+        }
 
         return $this->success(
             new BorrowingRequestResource($borrowingRequest),
