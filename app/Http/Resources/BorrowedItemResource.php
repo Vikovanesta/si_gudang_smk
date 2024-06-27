@@ -25,7 +25,7 @@ class BorrowedItemResource extends JsonResource
                 'returned_at' => $this->returned_at,
                 'start_date' => $this->requestDetail->start_date,
                 'end_date' => $this->requestDetail->end_date,
-                'note' => $this->requestDetail->note,
+                'purpose' => $this->requestDetail->request->purpose,
                 'is_cancelled' => $this->is_cancelled,
                 'status' => new BorrowingStatusResource($this->status),
                 'item' => new ItemResource($this->item),
