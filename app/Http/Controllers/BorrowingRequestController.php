@@ -265,7 +265,9 @@ class BorrowingRequestController extends Controller
             foreach ($borrowingRequest->details->last()->borrowedItems as $borrowedItem) {
                 $borrowedItem->item->decrement('stock', $borrowedItem->quantity);
                 $borrowedItem->status_id = 1; // 'Pending'
+                $borrowedItem->save();
             }
+            // dd($borrowedItem);
         }
         elseif ($validated['status'] == 2) {
             $borrowingRequest->details->last()->update([
