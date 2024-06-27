@@ -155,10 +155,13 @@ class BorrowedItemController extends Controller
 
             if (isset($validated['is_cancelled']) && $validated['is_cancelled']) {
                 $borrowedItem->item->increment('stock', $borrowedItem->quantity - $borrowedItem->returned_quantity);
+                $borrowedItem->save();
             }
 
             if (isset($validated['is_borrowed']) && $validated['is_borrowed']) {
                 $borrowedItem->borrowed_at = now();
+                $borrowedItem->status_id = 2;
+                $borrowedItem->save();
             }
 
             if (isset($validated['returned_at'])) {
