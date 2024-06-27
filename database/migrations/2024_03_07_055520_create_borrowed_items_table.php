@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('item_id')->constrained('items');
             $table->foreignId('request_detail_id')->constrained('request_details');
+            $table->foreignId('status_id')->constrained('borrowing_statuses');
             $table->integer('quantity')->default(0);
             $table->integer('returned_quantity')->default(0);
             $table->dateTime('borrowed_at')->nullable();
