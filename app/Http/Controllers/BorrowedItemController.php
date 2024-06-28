@@ -109,6 +109,7 @@ class BorrowedItemController extends Controller
         $borrowedItem->load([
             'requestDetail.request',
             'item',
+            'requestDetail.request.sender.student.schoolClass',
         ]);
 
         return $this->success(new BorrowedItemResource($borrowedItem), 'Borrowed item retrieved successfully');
@@ -145,17 +146,18 @@ class BorrowedItemController extends Controller
                 ]
             );
 
-            $borrowedItem->item->update(['stock' => $borrowedItem->item->quantity - ($validated['returned_quantity'] ?? 0)]);
+            $borrowedItem->item->update(['stock' => $borrowedItem->item->stock + ($validated['returned_quantity'] ?? 0)]);
             $borrowedItem->refresh();
+            $borrowedItem->item->refresh();
 
             if ($borrowedItem->quantity == $borrowedItem->returned_quantity) {
                 $borrowedItem->returned_at = now();
                 $borrowedItem->save();
             }
 
-            if (isset($validated['is_cancelled']) && $validated['is_cancelled']) {
-                $borrowedItem->item->increment('stock', $borrowedItem->quantity - $borrowedItem->returned_quantity);
-                $borrowedItem->save();
+            if (isset($validated['is_cancelled']) && $validated['is_cancelled'] == 1) {
+                $borrowedItem->item->stock = $borrowedItem->item->stock + ($borrowedItem->quantity - ($borrowedItem->returned_quantity ?? 0));
+                $borrowedItem->item->save();
             }
 
             if (isset($validated['is_borrowed']) && $validated['is_borrowed']) {
@@ -165,7 +167,10 @@ class BorrowedItemController extends Controller
             }
 
             if (isset($validated['returned_at'])) {
+                $borrowedItem->item->stock = $borrowedItem->item->stock + ($borrowedItem->quantity - ($borrowedItem->returned_quantity ?? 0));
                 $borrowedItem->returned_quantity = $borrowedItem->quantity;
+                $borrowedItem->status_id = 3;
+                $borrowedItem->item->save();
                 $borrowedItem->save();
             }
 
