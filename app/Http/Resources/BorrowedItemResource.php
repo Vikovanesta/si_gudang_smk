@@ -37,7 +37,10 @@ class BorrowedItemResource extends JsonResource
             return [
                 'id' => $this->id,
                 'quantity' => $this->quantity,
+                'start_date' => $this->requestDetail->start_date,
+                'end_date' => $this->requestDetail->end_date,
                 'item' => new ItemResource($this->item),
+
             ];
         }
     }
